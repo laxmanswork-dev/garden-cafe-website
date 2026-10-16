@@ -53,10 +53,28 @@
     --gap: 1.75rem;
     --edge: 2rem;
     --hang-slot: 1.8125rem;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     /* Wide enough to be the signature of the hero, still well inside the
-       page so the frames support the headline rather than compete with it. */
-    width: min(100%, 57rem);
+       page so the frames support the headline rather than compete with it.
+       Sized so each of the seven frames keeps the width it had in the row
+       of six (57rem). */
+    width: min(100%, 66rem);
+  }
+}
+
+/* The seventh photograph, on its own line below the desktop row: centred
+   under the others, the same width as one of them. */
+@media (max-width: 37.49em) {
+  .garland__item:nth-child(7) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - var(--gap)) / 2);
+  }
+}
+
+@media (min-width: 37.5em) and (max-width: 63.99em) {
+  .garland__item:nth-child(7) {
+    grid-column: 2;
   }
 }
 
@@ -387,9 +405,17 @@
   }
 }
 
+/* A photograph still to come: a plain warm-stone print in the same frame,
+   not the hero's dark surface tone. */
+.garland__photo .image-placeholder {
+  background-color: var(--color-stone);
+  outline-color: rgb(32 33 30 / 0.08);
+}
+
 .garland__photo .image-placeholder__label {
   font-size: 0.625rem;
   white-space: nowrap;
+  color: rgb(32 33 30 / 0.45);
 }
 
 /* Fixed-height caption band: the navigation's small tracked caps in ink,

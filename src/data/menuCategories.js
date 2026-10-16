@@ -1,5 +1,5 @@
 /**
- * What Garden Cafe offers — the six categories that rotate in the hero's
+ * What Garden Cafe offers — the seven categories that rotate in the hero's
  * food moment (components/HeroFoodMoment), in their approved order.
  *
  * PHOTOGRAPHY — PLACEHOLDER
@@ -95,5 +95,16 @@ export const menuCategories = [
     alt: 'Ice cream served at Garden Cafe',
     photoSupplied: true,
     large: { src: '/images/food/web/ice-cream-807.webp', width: 807, height: 634 },
+  },
+  {
+    // Falooda is not yet in the verified menu (menuData.js), so its link
+    // opens Food & Drinks at its first category.
+    id: 'falooda',
+    number: '07',
+    name: 'Falooda',
+    image: '/images/food/web/falooda-640.webp',
+    srcSet: '/images/food/web/falooda-320.webp 320w, /images/food/web/falooda-640.webp 640w',
+    alt: 'Falooda served at Garden Cafe',
+    photoSupplied: true,
   },
 ]

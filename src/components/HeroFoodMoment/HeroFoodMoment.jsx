@@ -7,13 +7,13 @@ import { signature } from './gardenSignature'
 import './HeroFoodMoment.css'
 
 /*
- * The hero's food moment — six photographs as one curated collection.
+ * The hero's food moment — seven photographs as one curated collection.
  *
  * A single small signed "Garden" (see gardenSignature.js) sits above
- * the collection as a quiet signature; the six framed photographs hang
+ * the collection as a quiet signature; the seven framed photographs hang
  * beneath it at slightly different heights and tilts, like prints pinned up
- * by hand. Desktop: one row of six. 600px up: two rows of three. Phones:
- * three rows of two.
+ * by hand. Desktop: one row of seven. 600px up: rows of three, the seventh
+ * centred beneath. Phones: rows of two, the seventh centred beneath.
  *
  * The signature signs itself, on a loop: the pen draws the G in one
  * gesture, then "arden", then the short run-out; the word holds, fades, and
@@ -52,6 +52,7 @@ const HANG = [
   { drop: 1.5, tilt: 1.75, sway: 0.5, cycle: 7, gust: 1.8 }, // Sweets — 24px
   { drop: 2, tilt: -1, sway: 0.6, cycle: 7.8, gust: 2.1 }, // Milkshakes — 32px
   { drop: 2.875, tilt: 1, sway: 0.75, cycle: 6.9, gust: 2.6 }, // Ice Cream — 46px
+  { drop: 1.75, tilt: -1.5, sway: 0.55, cycle: 7.6, gust: 2 }, // Falooda — 28px
 ]
 
 // The sway begins once the entrance has settled, each frame a beat apart.
