@@ -1,0 +1,321 @@
+/* ==========================================================================
+   02 — The Cafe · LIGHT / EDITORIAL
+   NOTE: the photographs now sit in plain rectangular frames (makeFrame in
+   botanical.js). Where the notes below say "tree", "crown" or "trunk",
+   read "frame" — names kept from the organic crowns once used here.
+
+   The label and headline, then four features as one composition: four
+   trees from the same garden (botanical.js), each holding a real
+   photograph in its crown, standing on a rule, its words beneath.
+
+   Desktop and tablet (≥ 768px): two editorial pages. Page 1 — the label,
+     headline and the first pair — fits the first screen; page 2 — the
+     second pair — begins on the next. Each pair shares three rows (tree,
+     rule, words), so its roots, rules and titles align whatever the
+     trees' heights; each feature is drawn in toward a narrow gutter.
+   Phones: one feature at a time, the tree centred over its rule.
+
+   One scale, --u (px per drawing unit), sizes every tree, so their small
+   differences in proportion stay true. Every feature — its rule and its
+   words — is the same width, --feature-w (the widest tree plus a little).
+
+   Spacing scale (the only distances used here):
+     intro → first pair  --gap-lead
+     pair → pair         --gap-row
+     rule → words        --space-3;  within the words: --space-2
+   ========================================================================== */
+
+.place {
+  /* Phones and small tablets: each frame fills the column, so its edges
+     sit on the same margins as the headline. */
+  --u: calc((100vw - 2 * var(--page-padding)) / 320);
+  --feature-w: calc(320 * var(--u));
+  --gap-lead: var(--space-7);
+  /* Phones: the frames follow one another closely, now their words sit
+     inside them. */
+  --gap-row: var(--space-6);
+  /* One column: the words span more of each photograph, so the shade on
+     them reaches further (same depth). */
+  --shade-size: 82% 72%;
+  --chapter-min-height: auto;
+  gap: var(--gap-row);
+}
+
+.place__spread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-row);
+}
+
+.place__spread--1 {
+  gap: var(--gap-lead);
+}
+
+.place__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* "02 — The Cafe": larger than the site's other section labels (17%). */
+.place__intro .section-label {
+  font-size: calc(var(--text-eyebrow) * 1.17);
+}
+
+.place__pair {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-row);
+}
+
+/* --------------------------------------------------------------------------
+   The tree
+   -------------------------------------------------------------------------- */
+
+.botanical-tree {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+/* The moulding: a square-cornered frame in a deep warm stone (its tone,
+   lighter at the top, is a gradient in BotanicalTree), with a close,
+   understated shadow so it sits against the wall rather than floats. */
+.botanical-tree__moulding {
+  stroke: #36332d;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 1px 1.5px rgb(32 33 30 / 0.16)) drop-shadow(0 5px 12px rgb(32 33 30 / 0.07));
+}
+
+/* The light on the moulding's profile: barely there. */
+.botanical-tree__lip {
+  fill: none;
+  stroke: rgb(255 250 240 / 0.12);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* The mount: ivory board (a step brighter than the page) set into the
+   moulding; its dark hairline is the shadowed step where it meets the
+   frame. */
+.botanical-tree__mount {
+  fill: #fbf9f3;
+  stroke: rgb(20 21 19 / 0.45);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* The window: a hairline where the photograph meets the mount, like the
+   cut edge of a real board. */
+.botanical-tree__window {
+  fill: none;
+  stroke: rgb(32 33 30 / 0.18);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+/* The photograph, given the same gentle grade as the hero's prints so the
+   four shots sit together on the paper. */
+.botanical-tree__photo {
+  filter: saturate(0.9) contrast(1.03) sepia(0.05);
+}
+/* Hover (mouse only): the photograph draws a fraction closer inside its
+   crown — slowly; the crown, its outline and the trunk stay still. */
+.botanical-tree__zoom {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 1.4s var(--ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .place-feature:hover .botanical-tree__zoom {
+    transform: scale(1.02);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The feature: tree, rule, words — one axis.
+   -------------------------------------------------------------------------- */
+
+.place-feature {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: var(--feature-w);
+  max-width: 100%;
+}
+
+/* Each tree at the shared scale, centred over its rule; its root meets
+   the rule exactly. Its box also holds its two side lines. */
+.place-feature__visual {
+  position: relative;
+  align-self: center;
+  width: min(100%, calc(var(--tree-units) * var(--u)));
+}
+
+.place-feature .botanical-tree {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   The words — set inside the photograph, at its top-left corner.
+
+   --frame-w / --frame-h / --frame-mat mirror the frame drawn in
+   ThePlace.jsx (makeFrame), so the shade and the words are placed from the
+   photograph's own edge, inside the white mount, at every size.
+   -------------------------------------------------------------------------- */
+
+.place-feature__visual {
+  --frame-w: 334;
+  --frame-h: 198.8;
+  /* Moulding (4.4) + mount (10). */
+  --frame-mat: 14.4;
+  --mat-x: calc(var(--frame-mat) / var(--frame-w) * 100%);
+  --mat-y: calc(var(--frame-mat) / var(--frame-h) * 100%);
+  /* Words to the photograph's edge: 14px on phones, 28px on desktop. */
+  --words-inset: clamp(0.875rem, 0.55rem + 1.3vw, 1.75rem);
+}
+
+/* Two soft shades, both kept inside the photograph and neither with a hard
+   edge: one from the top-left corner, one centred on the words themselves
+   — so the ivory words read on bright foliage, sky and roof, while the
+   rest of the photograph is untouched. The shade on the words is tuned to
+   each photograph: --shade is its depth at the centre. */
+.place-feature__visual::after {
+  content: '';
+  position: absolute;
+  inset: var(--mat-y) var(--mat-x);
+  background:
+    radial-gradient(
+      var(--shade-size, 62% 58%) at 24% 24%,
+      rgb(20 21 19 / var(--shade, 0.5)) 0%,
+      rgb(20 21 19 / calc(var(--shade, 0.5) * 0.7)) 50%,
+      rgb(20 21 19 / 0) 100%
+    ),
+    radial-gradient(
+      115% 105% at 0% 0%,
+      rgb(20 21 19 / calc(0.55 * var(--corner, 1))) 0%,
+      rgb(20 21 19 / calc(0.34 * var(--corner, 1))) 36%,
+      rgb(20 21 19 / 0) 68%
+    );
+  pointer-events: none;
+}
+
+/* Each depth is tuned to its photograph and checked against the rendered
+   pixels under the words (aim: 4.5:1 for the ivory text). 04, at dusk,
+   keeps the base depth (0.5). 01 sits on bright foliage; 02's sentence
+   runs across the white plate; 03 on a pale roof and bright greenery. */
+.place__spread--1 .place-feature:nth-child(1) .place-feature__visual {
+  --shade: 0.7;
+}
+
+.place__spread--1 .place-feature:nth-child(2) .place-feature__visual {
+  --shade: 0.74;
+}
+
+/* 03 lighter than its measured depth (was 0.82, corner at full), so the
+   portrait, table and greenery keep their own colours. */
+.place__spread--2 .place-feature:nth-child(1) .place-feature__visual {
+  --shade: 0.53;
+  --corner: 0.65;
+}
+
+.place-feature__words {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--mat-y) + var(--words-inset));
+  left: calc(var(--mat-x) + var(--words-inset));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: min(22em, 72%);
+  color: var(--color-text-light);
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.5),
+    0 1px 16px rgb(0 0 0 / 0.5);
+}
+
+.place-feature__index {
+  display: block;
+  color: rgb(247 245 239 / 0.82);
+}
+
+/* The title: Cormorant capitals, tracked like the wordmark — elegant but
+   restrained, so the headline stays the section's first read (20 → 28px). */
+.place-feature__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.0739rem + 0.7512vw, 1.75rem);
+  font-weight: var(--weight-regular);
+  line-height: 1.08;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.place-feature__text {
+  font-size: var(--text-body-sm);
+  line-height: 1.5;
+  color: rgb(247 245 239 / 0.92);
+  text-wrap: pretty;
+}
+
+/* --------------------------------------------------------------------------
+   Two rows of two (from 1024px; below that the two-column frames
+   are too small for the words over them, so phones and tablets keep one
+   column). The pair spans the page's content width
+   exactly — two frames (334 units each) and the gutter (42) — so its left
+   edge sits under the label and headline and its right edge on the
+   opposite margin. The second pair follows after one measured row gap.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 64em) {
+  .place {
+    /* Half the content width is one frame plus half the gutter: 334 + 21. */
+    --u: calc(min(50vw - var(--page-padding), var(--content-width) / 2) / 355);
+    --gap-lead: clamp(1.5rem, 3.5svh, 2.25rem);
+    /* The same gap between the rows as between the columns. */
+    --gap-row: calc(42 * var(--u));
+    --shade-size: 62% 58%;
+    /* A little wider than on phones, so the four features spread a touch
+       further across the page (held within the column by max-width). */
+    --feature-w: calc(334 * var(--u));
+    padding-block: calc(var(--nav-height) + clamp(1rem, 3.5svh, 2.25rem)) var(--chapter-padding);
+  }
+
+  /* One pair: two features side by side. */
+  .place__pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* A close, fixed gutter (~78px at 1440): the two columns read as one
+       composition. */
+    gap: 0 calc(42 * var(--u));
+  }
+
+  /* Each feature holds to the gutter, so the pair sits centred on the page
+     as one block. */
+  .place-feature {
+    align-self: start;
+  }
+
+  .place-feature:nth-child(1) {
+    justify-self: end;
+  }
+
+  .place-feature:nth-child(2) {
+    justify-self: start;
+  }
+}
+
+/* Desktop: the headline keeps its established size, set by the screen's
+   height as well as its width. */
+@media (min-width: 64em) {
+  .place__intro {
+    gap: clamp(0.75rem, 2svh, 1.25rem);
+  }
+
+  .place__headline {
+    font-size: min(var(--text-display-md), 5.3vw, 9svh);
+  }
+}

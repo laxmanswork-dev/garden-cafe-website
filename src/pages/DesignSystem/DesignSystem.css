@@ -1,0 +1,129 @@
+/* Development reference page only. */
+
+.ds-progress {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: calc(var(--z-nav) + 1);
+  height: 2px;
+  background-color: var(--color-moss);
+  transform-origin: left center;
+}
+
+.ds {
+  padding-block: calc(var(--nav-height) + var(--space-8)) var(--section-spacing);
+}
+
+.ds-header {
+  display: grid;
+  gap: var(--space-4);
+  padding-block-end: var(--space-8);
+}
+
+.ds-block {
+  display: grid;
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+  border-top: var(--border-width) solid var(--surface-line);
+}
+
+.ds-block__title {
+  color: var(--surface-text-muted);
+}
+
+.ds-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--grid-gap);
+}
+
+.ds-swatch {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ds-swatch__chip {
+  display: block;
+  aspect-ratio: 4 / 3;
+  border: var(--border-width) solid var(--surface-line);
+}
+
+.ds-type {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.ds-type__row {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ds-stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.ds-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.ds-row--surface {
+  padding: var(--space-6);
+}
+
+.ds-grid-overlay,
+.ds-grid-demo {
+  grid-area: 2 / 1;
+}
+
+.ds-grid-overlay__col {
+  min-height: 12rem;
+  background-color: color-mix(in srgb, var(--color-moss) 10%, transparent);
+}
+
+/* Show only as many overlay columns as the current grid has. */
+.ds-grid-overlay__col:nth-child(n + 5) {
+  display: none;
+}
+
+@media (min-width: 48em) {
+  .ds-grid-overlay__col:nth-child(n + 5) {
+    display: block;
+  }
+
+  .ds-grid-overlay__col:nth-child(n + 9) {
+    display: none;
+  }
+}
+
+@media (min-width: 64em) {
+  .ds-grid-overlay__col:nth-child(n + 9) {
+    display: block;
+  }
+}
+
+.ds-grid-demo {
+  align-content: start;
+  padding-block: var(--space-4);
+}
+
+.ds-grid-demo__cell {
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-moss);
+  font-size: var(--text-caption);
+}
+
+.ds-motion {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.ds-motion__frame {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-stone);
+}

@@ -1,0 +1,11 @@
+/* Flex column: the reveal masks use equal negative margins to cancel their
+   clipping room; in block flow those margins would collapse and open up
+   extra leading between the approved lines. */
+.headline {
+  display: flex;
+  flex-direction: column;
+}
+
+.headline__line .scroll-reveal__inner {
+  text-wrap: balance;
+}

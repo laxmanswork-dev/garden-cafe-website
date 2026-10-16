@@ -1,0 +1,54 @@
+/* ==========================================================================
+   WhatsApp button — floating chat link, bottom-right.
+   Sits below the navbar layer, so the open mobile menu covers it.
+   ========================================================================== */
+
+.whatsapp-button {
+  --whatsapp-size: 42px;
+  --whatsapp-gap: 20px;
+  --whatsapp-lift: 0px; /* set from JS while the footer base row is in view */
+
+  position: fixed;
+  right: max(var(--whatsapp-gap), env(safe-area-inset-right));
+  bottom: calc(max(var(--whatsapp-gap), env(safe-area-inset-bottom)) + var(--whatsapp-lift));
+  z-index: calc(var(--z-menu) - 1);
+  display: grid;
+  place-items: center;
+  width: var(--whatsapp-size);
+  height: var(--whatsapp-size);
+  border-radius: 50%;
+  background-color: #25d366; /* WhatsApp brand green */
+  color: #fff;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.12),
+    0 4px 12px rgb(0 0 0 / 0.1);
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.whatsapp-button svg {
+  width: 54%;
+  height: 54%;
+  fill: currentColor;
+}
+
+@media (min-width: 64em) {
+  .whatsapp-button {
+    --whatsapp-size: 44px;
+    --whatsapp-gap: 24px;
+  }
+}
+
+@media (hover: hover) {
+  .whatsapp-button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.12),
+      0 8px 18px rgb(0 0 0 / 0.12);
+  }
+}
+
+.whatsapp-button:focus-visible {
+  outline-color: var(--color-ink);
+}

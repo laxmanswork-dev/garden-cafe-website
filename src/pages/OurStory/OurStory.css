@@ -1,0 +1,116 @@
+/* ==========================================================================
+   /our-story — how Garden Cafe began.
+   Text-led: the opening (label, heading), the four paragraphs as one
+   narrative beside the owners' photograph (an empty 4:5 placeholder until it
+   is supplied), and a quiet close. No cafe photographs.
+
+   Phones: one column — opening, story, photograph, close.
+   Tablets (≥ 768px): story and photograph side by side.
+   ========================================================================== */
+
+.story-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-block: calc(var(--nav-height) + var(--space-7)) var(--section-spacing-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Opening
+   -------------------------------------------------------------------------- */
+
+.story-opening {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* The same size as the menu page's title. */
+.story-opening__title {
+  font-size: calc(var(--text-display-md) * 0.9);
+}
+
+/* --------------------------------------------------------------------------
+   The story and the owners' photograph
+   -------------------------------------------------------------------------- */
+
+.story-body {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.story-body__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: var(--measure);
+}
+
+.story-body__text p {
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body);
+  color: var(--surface-text);
+  text-wrap: pretty;
+}
+
+.story-body__photo {
+  width: 100%;
+  max-width: 26rem;
+}
+
+/* Reserved for the owners' photograph: same 4:5 box as the photo will use. */
+.story-body__placeholder {
+  aspect-ratio: 4 / 5;
+  background-color: var(--color-stone);
+  border: var(--border-width) solid var(--surface-line);
+}
+
+/* --------------------------------------------------------------------------
+   Closing
+   -------------------------------------------------------------------------- */
+
+.story-closing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block-start: var(--space-8);
+  border-top: var(--border-width) solid var(--surface-line);
+  text-align: center;
+}
+
+.story-closing__line {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-xl);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-heading);
+  color: var(--surface-text);
+}
+
+/* --------------------------------------------------------------------------
+   Tablets (≥ 768px): the story on the left, the photograph on the right,
+   both starting at the same line and inset from the page margins (the
+   heading above stays on the margin).
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 48em) {
+  .story-body {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: start;
+    padding-inline: clamp(0rem, 6vw - 1.5rem, 5rem);
+  }
+
+  .story-body__photo {
+    max-width: 30rem;
+    justify-self: end;
+  }
+
+  /* Fit the whole frame on screen below the heading (~19rem from the top),
+     with room to breathe: on short screens the 4:5 box gives up height,
+     never width. The same cap holds for the photo when it arrives. */
+  .story-body__photo > * {
+    width: 100%;
+    max-height: max(calc(100svh - 20.5rem), 25.5rem);
+  }
+}

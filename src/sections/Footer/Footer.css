@@ -1,0 +1,146 @@
+/* ==========================================================================
+   Footer · DARK / CLOSING FRAME
+   Brand, navigation, one action; a hairline base. Deliberately quiet.
+   ========================================================================== */
+
+.footer {
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+  /* Compact: 48 → 80 above the content, 24 below the base row. */
+  padding-block: clamp(3rem, 2.3rem + 3vw, 5rem) var(--space-5);
+}
+
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 2rem + 2vw, 4rem); /* 40 → 64 */
+}
+
+.footer__main {
+  row-gap: var(--space-6);
+}
+
+/* Brand ------------------------------------------------------------------ */
+
+.footer__brand {
+  --span-md: 8;
+  --span-lg: 6;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.footer__wordmark {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-xl);
+  font-weight: var(--weight-light);
+  line-height: 0.95;
+  letter-spacing: var(--tracking-wordmark);
+  text-transform: uppercase;
+}
+
+/* Where the cafe is: a quiet line under the name. */
+.footer__place {
+  color: var(--surface-text-muted);
+}
+
+/* Navigation ------------------------------------------------------------- */
+
+.footer__nav {
+  --span: 2;
+  --span-md: 3;
+  --span-lg: 2;
+  --start-lg: 8;
+}
+
+.footer__nav-list,
+.footer__social {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  color: var(--surface-text);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .footer__link:hover {
+    color: var(--surface-text-muted);
+  }
+}
+
+.footer__actions {
+  --span: 2;
+  --span-md: 4;
+  --start-md: 5;
+  --span-lg: 3;
+  --start-lg: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+
+@media (min-width: 64em) {
+  /* Pointer-sized rows on desktop: the four links sit closer together.
+     Phones and tablets keep the full touch target. */
+  .footer__nav-list .footer__link {
+    min-height: 2.125rem;
+  }
+
+  .footer__actions {
+    align-items: flex-end;
+  }
+
+  .footer__social {
+    align-items: flex-end;
+  }
+}
+
+@media (max-width: 29.99em) {
+  .footer__nav,
+  .footer__actions {
+    --span: 4;
+  }
+
+  .footer__nav-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+  }
+}
+
+/* Base ------------------------------------------------------------------- */
+
+.footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  padding-block-start: var(--space-5);
+  border-top: var(--border-width) solid var(--surface-line);
+  font-size: var(--text-caption);
+  color: var(--surface-text-muted);
+}
+
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+}
+
+.footer__legal-item {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+}
+
+.footer__legal-item.footer__link {
+  color: var(--surface-text-muted);
+}

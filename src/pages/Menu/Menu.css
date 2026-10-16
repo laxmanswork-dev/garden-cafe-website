@@ -1,0 +1,213 @@
+/* ==========================================================================
+   /menu — intro, section bar, chapters of dishes.
+
+   A chapter: number, title and rule, then a grid of dishes (MenuItem:
+   photograph frame, number, name). One grid for every section and one 4:3
+   frame for every dish (MenuImage), so all frames match.
+
+   Desktop (≥ 1024px): the title holds in columns 1–3 while its dishes
+     scroll past, two to a row, in columns 5–12.
+   From 600px: title above; two dishes to a row.
+   Phones: one dish per row, frames at full width.
+   ========================================================================== */
+
+.menu-page {
+  --menu-bar-height: 3.25rem;
+  padding-block: calc(var(--nav-height) + var(--space-6)) var(--section-spacing-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Intro
+   -------------------------------------------------------------------------- */
+
+.menu-page__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* A touch smaller than the homepage's display headlines. */
+.menu-page__intro .menu-page__title {
+  font-size: calc(var(--text-display-md) * 0.9);
+}
+
+/* --------------------------------------------------------------------------
+   Section bar — stays under the navbar; scrolls sideways when the names
+   do not fit.
+   -------------------------------------------------------------------------- */
+
+.menu-bar {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: calc(var(--z-nav) - 1);
+  margin-block-start: var(--space-7);
+  background-color: var(--surface-bg);
+  border-block: var(--border-width) solid var(--surface-line);
+}
+
+.menu-bar__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  height: var(--menu-bar-height);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.menu-bar__list::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-bar__list > li {
+  flex-shrink: 0;
+}
+
+.menu-bar__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  font-size: 0.75rem;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-ui);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--surface-text-muted);
+  text-decoration: none;
+  transition: color var(--duration-normal) var(--ease-standard);
+}
+
+.menu-bar__link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0.625rem;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.menu-bar__link[aria-current='location'] {
+  color: var(--surface-text);
+}
+
+.menu-bar__link[aria-current='location']::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .menu-bar__link:hover {
+    color: var(--surface-text);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Chapters
+   -------------------------------------------------------------------------- */
+
+.menu-page__chapters {
+  /* The break between one chapter and the next. */
+  --chapter-gap: var(--space-9);
+  margin-block-start: var(--space-8);
+}
+
+.menu-chapter + .menu-chapter {
+  margin-block-start: var(--chapter-gap);
+}
+
+.menu-chapter {
+  display: grid;
+  align-items: start;
+  gap: var(--space-7);
+  /* Land below the navbar and the section bar. */
+  scroll-margin-top: calc(var(--nav-height) + var(--menu-bar-height) + var(--space-6));
+}
+
+.menu-chapter__head {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+}
+
+.menu-chapter__number {
+  color: var(--surface-text-muted);
+}
+
+.menu-chapter__title {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-xl);
+  font-weight: var(--weight-regular);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-heading);
+}
+
+.menu-chapter__rule {
+  width: 3rem;
+  height: 1px;
+  margin-block-start: var(--space-2);
+  background-color: var(--surface-text);
+  opacity: 0.4;
+}
+
+/* One grid for every section, so every frame on the page is the same size.
+   Phones: one dish per row. From 600px: two. */
+.menu-chapter__dishes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7) var(--space-6);
+}
+
+/* Subheadings within a section (Specials & Savoury Bites): a quiet label
+   on a hairline above each group of dishes. */
+.menu-chapter__body {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.menu-chapter__group {
+  padding-block-start: var(--space-3);
+  border-top: var(--border-width) solid var(--surface-line);
+  color: var(--surface-text-muted);
+}
+
+.menu-chapter__dishes + .menu-chapter__group {
+  margin-block-start: var(--space-6);
+}
+
+@media (min-width: 37.5em) {
+  .menu-chapter__dishes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Desktop: the title holds beside its dishes.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 64em) {
+  .menu-page__chapters {
+    --chapter-gap: calc(var(--space-9) * 1.5);
+  }
+
+  .menu-chapter {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+  }
+
+  .menu-chapter__head {
+    grid-column: 1 / span 3;
+    position: sticky;
+    top: calc(var(--nav-height) + var(--menu-bar-height) + var(--space-7));
+  }
+
+  .menu-chapter__body {
+    grid-column: 5 / -1;
+  }
+
+  .menu-chapter__dishes {
+    row-gap: var(--space-8);
+  }
+}

@@ -1,0 +1,197 @@
+/* ==========================================================================
+   Utilities — deliberately few. Layout primitives and accessibility helpers
+   only; everything else belongs in component CSS.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Container — centred content column with fluid page padding.
+   Override the max width per instance with --container-max, e.g.
+   style={{ '--container-max': 'var(--content-width-wide)' }}
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: min(100% - var(--page-padding) * 2, var(--container-max, var(--content-width)));
+  margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Section — vertical rhythm between homepage chapters.
+   -------------------------------------------------------------------------- */
+
+.section {
+  position: relative;
+  padding-block: var(--section-spacing);
+}
+
+.section--compact {
+  padding-block: var(--section-spacing-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Chapter — a homepage section composed as one complete view.
+
+   On desktop (≥1024 wide and tall enough) a chapter is at least one
+   viewport tall (override with --chapter-min-height, e.g. 90svh for dense
+   chapters) and its content is distributed by .chapter__inner. Content still
+   determines the height if it needs more. Tablet and mobile flow naturally.
+   -------------------------------------------------------------------------- */
+
+.chapter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--chapter-padding);
+  scroll-margin-top: 0;
+  overflow-x: clip;
+}
+
+.chapter__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--chapter-gap, var(--space-8));
+}
+
+/* A fine ink rule at the content's width — the break between one homepage
+   chapter and the next. --ruled closes a chapter; --ruled-top opens one,
+   for a break whose chapter above ends on a dark panel (Through the Day),
+   where an ink rule would disappear. */
+.chapter--ruled::after,
+.chapter--ruled-top::before {
+  content: '';
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 50%;
+  width: min(100% - var(--page-padding) * 2, var(--container-max, var(--content-width)));
+  height: var(--border-width);
+  /* Light ink: a clear break, far lighter than solid black. */
+  background-color: rgb(32 33 30 / 0.28);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* High-density screens: half a pixel — a true hairline — a touch deeper so
+   it reads at the same light weight. */
+@media (min-resolution: 2dppx) {
+  .chapter--ruled::after,
+  .chapter--ruled-top::before {
+    background-color: rgb(32 33 30 / 0.4);
+    transform: translateX(-50%) scaleY(0.5);
+  }
+}
+
+.chapter--ruled-top::before {
+  inset-block: 0 auto;
+}
+
+@media (min-width: 64em) and (min-height: 40em) {
+  .chapter {
+    min-height: var(--chapter-min-height, 100svh);
+  }
+
+  .chapter__inner {
+    justify-content: space-between;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Editorial grid — 4 / 8 / 12 columns (see responsive.css for tiers).
+
+   Children use .col and position themselves with custom properties rather
+   than hundreds of span classes. Unset tiers default to full width, so each
+   breakpoint is composed deliberately:
+
+     <div class="grid">
+       <div class="col" style="--span-md: 5; --span-lg: 7; --start-lg: 2">…</div>
+       <div class="col" style="--span-md: 3; --span-lg: 3; --start-lg: 10">…</div>
+     </div>
+
+   Properties: --span / --start          (mobile, 4 cols)
+               --span-md / --start-md    (≥768px, 8 cols)
+               --span-lg / --start-lg    (≥1024px, 12 cols)
+               --row / --row-md / --row-lg (optional explicit rows for overlap)
+   -------------------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  row-gap: var(--grid-row-gap, var(--grid-gap));
+}
+
+.col {
+  --_span: var(--span, 4);
+  --_start: var(--start, auto);
+  --_row: var(--row, auto);
+  grid-column: var(--_start) / span var(--_span);
+  grid-row: var(--_row);
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Surfaces — set background and remap text/line/focus tokens so every
+   component inside reads correctly without knowing its context.
+   -------------------------------------------------------------------------- */
+
+.surface-paper {
+  --surface-bg: var(--color-paper);
+  --surface-text: var(--color-text);
+  --surface-text-muted: var(--color-text-muted);
+  --surface-line: var(--color-line);
+  --focus-ring-color: var(--color-ink);
+  background-color: var(--surface-bg);
+  color: var(--surface-text);
+}
+
+.surface-stone {
+  --surface-bg: var(--color-stone);
+  --surface-text: var(--color-text);
+  --surface-text-muted: var(--color-text-muted-on-stone);
+  --surface-line: var(--color-line);
+  --focus-ring-color: var(--color-ink);
+  background-color: var(--surface-bg);
+  color: var(--surface-text);
+}
+
+.surface-ink {
+  --surface-bg: var(--color-ink);
+  --surface-text: var(--color-text-light);
+  --surface-text-muted: color-mix(in srgb, var(--color-text-light) 72%, transparent);
+  --surface-line: var(--color-line-light);
+  --focus-ring-color: var(--color-text-light);
+  --color-selection-bg: var(--color-stone);
+  --color-selection-text: var(--color-ink);
+  background-color: var(--surface-bg);
+  color: var(--surface-text);
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility & text helpers
+   -------------------------------------------------------------------------- */
+
+.visually-hidden:not(:focus-visible):not(:active) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Only for interactive surfaces where accidental selection breaks the
+   gesture (e.g. draggable carousels). Never on readable content. */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}

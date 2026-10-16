@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Responsive foundation
+
+   Breakpoints (mirrored in src/utils/breakpoints.js — keep in sync).
+   Media queries use em so they respect user font-size preferences.
+
+     base      0 – 599    phones (375, 390, 480)   4-col · single editorial column
+     sm   ≥ 37.5em  600   large phones / small tablets
+     md   ≥ 48em    768   tablets                  8-col · simplified grid
+     lg   ≥ 64em   1024   small laptops            12-col · editorial compositions
+     xl   ≥ 80em   1280   laptops
+     2xl  ≥ 90em   1440   desktop reference (1440 × 900) and wider
+
+   Type, spacing and gutters are fluid (clamp) between 375 and 1440, so
+   tiers here only change structure — never re-declare font sizes per tier.
+   ========================================================================== */
+
+/* 600px (sm) has no global structural change: fluid tokens carry it.
+   Components opt in with @media (min-width: 37.5em) where needed. */
+
+/* ≥ 768px — 8-column tablet grid */
+@media (min-width: 48em) {
+  :root {
+    --grid-columns: 8;
+  }
+
+  .col {
+    --_span: var(--span-md, 8);
+    --_start: var(--start-md, auto);
+    --_row: var(--row-md, auto);
+  }
+}
+
+/* ≥ 1024px — 12-column desktop grid */
+@media (min-width: 64em) {
+  :root {
+    --grid-columns: 12;
+  }
+
+  .col {
+    --_span: var(--span-lg, 12);
+    --_start: var(--start-lg, auto);
+    --_row: var(--row-lg, auto);
+  }
+}
+
+/* ≥ 1440px — hold the composition; extra width becomes margin. */
+@media (min-width: 90em) {
+  :root {
+    --page-padding: 3.5rem;
+  }
+}
+
+/* Coarse pointers (touch): guarantee comfortable tap targets everywhere. */
+@media (pointer: coarse) {
+  :root {
+    --tap-target: 3rem;
+  }
+}

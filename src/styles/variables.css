@@ -1,0 +1,165 @@
+/* ==========================================================================
+   Garden Cafe — Design tokens
+   The single source of truth for colour, type, space, layout and motion.
+   Components must reference these tokens; never hard-code values.
+
+   Fluid values interpolate linearly between a 375px and 1440px viewport
+   (the 1440 × 900 desktop reference), then hold.
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     Colour — palette
+     Mostly neutral. Photography supplies the natural colour.
+     ------------------------------------------------------------------------ */
+  --color-ink: #20211e;
+  --color-ink-soft: #2c2d29;
+
+  --color-stone: #e9e6de;
+  --color-stone-soft: #f2f0e9;
+  --color-paper: #f7f5ef;
+  --color-white: #fbfaf6;
+
+  --color-moss: #68715f;
+  --color-moss-dark: #4f5848;
+
+  /* Colour — roles */
+  --color-text: #20211e;
+  --color-text-muted: #6f7069;
+  --color-text-light: #f7f5ef;
+  /* Warm ivory for type set over the hero film. */
+  --hero-text: #f1ebdd;
+
+  /* Muted text on stone surfaces. The approved muted grey measures 4.01:1 on
+     stone (below WCAG AA 4.5:1); this measures 4.80:1. Applied automatically
+     by .surface-stone — do not use directly. */
+  --color-text-muted-on-stone: #63645d;
+
+  --color-line: rgba(32, 33, 30, 0.16);
+  --color-line-light: rgba(251, 250, 246, 0.18);
+
+  --color-selection-bg: var(--color-moss-dark);
+  --color-selection-text: var(--color-text-light);
+
+  /* Surface context — overridden by .surface-* utilities so components can
+     stay colour-agnostic. */
+  --surface-bg: var(--color-paper);
+  --surface-text: var(--color-text);
+  --surface-text-muted: var(--color-text-muted);
+  --surface-line: var(--color-line);
+  --focus-ring-color: var(--color-ink);
+
+  /* ------------------------------------------------------------------------
+     Typography — families
+     Local files are declared in typography.css (public/fonts/). Until they
+     are added, these stacks fall back to installed copies, then to system
+     serif / sans-serif. No external font requests are made.
+     ------------------------------------------------------------------------ */
+  --font-display:
+    'Cormorant Garamond', 'Cormorant Fallback', 'Cormorant', 'Garamond', 'Iowan Old Style', Georgia,
+    'Times New Roman', serif;
+  --font-body:
+    'Inter', 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Typography — fluid sizes (375px → 1440px) */
+  /* Hero wordmark: uppercase Cormorant, tracked open (36 → 104) */
+  --text-wordmark: clamp(2.25rem, 0.7535rem + 6.385vw, 6.5rem);
+  --text-display-xl: clamp(3.25rem, 1.2254rem + 8.6385vw, 9rem); /* 52 → 144 */
+  --text-display-lg: clamp(2.75rem, 1.2535rem + 6.385vw, 7rem); /* 44 → 112 */
+  --text-display-md: clamp(2.25rem, 1.2817rem + 4.1315vw, 5rem); /* 36 → 80 */
+  --text-heading-xl: clamp(1.875rem, 1.3028rem + 2.4413vw, 3.5rem); /* 30 → 56 */
+  --text-heading-lg: clamp(1.5rem, 1.1919rem + 1.3146vw, 2.375rem); /* 24 → 38 */
+  --text-heading-md: clamp(1.1875rem, 1.0775rem + 0.4695vw, 1.5rem); /* 19 → 24 */
+  --text-body-lg: clamp(1.125rem, 1.059rem + 0.2817vw, 1.3125rem); /* 18 → 21 */
+  --text-body: clamp(1rem, 0.978rem + 0.0939vw, 1.0625rem); /* 16 → 17 */
+  --text-body-sm: clamp(0.875rem, 0.853rem + 0.0939vw, 0.9375rem); /* 14 → 15 */
+  --text-eyebrow: clamp(0.75rem, 0.728rem + 0.0939vw, 0.8125rem); /* 12 → 13 */
+  --text-label: clamp(0.8125rem, 0.7905rem + 0.0939vw, 0.875rem); /* 13 → 14 */
+  --text-caption: clamp(0.75rem, 0.728rem + 0.0939vw, 0.8125rem); /* 12 → 13 */
+
+  /* Typography — line height */
+  --leading-display: 0.94;
+  --leading-heading: 1.08;
+  --leading-snug: 1.3;
+  --leading-body: 1.6;
+
+  /* Typography — tracking. Negative tracking only on large display sizes;
+     small uppercase text gets a restrained positive value. */
+  --tracking-display: -0.025em;
+  --tracking-heading: -0.012em;
+  --tracking-tight: -0.006em;
+  --tracking-normal: 0;
+  --tracking-label: 0.01em;
+  --tracking-eyebrow: 0.08em;
+  --tracking-ui: 0.07em; /* uppercase buttons and navigation */
+  --tracking-wordmark: 0.06em;
+
+  --measure: 36em; /* comfortable reading line length for body copy */
+  --measure-narrow: 26em;
+
+  /* ------------------------------------------------------------------------
+     Space — fixed scale (4px base) for component internals
+     ------------------------------------------------------------------------ */
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.5rem; /* 24 */
+  --space-6: 2rem; /* 32 */
+  --space-7: 3rem; /* 48 */
+  --space-8: 4rem; /* 64 */
+  --space-9: 6rem; /* 96 */
+  --space-10: 8rem; /* 128 */
+
+  /* ------------------------------------------------------------------------
+     Layout
+     ------------------------------------------------------------------------ */
+  --page-padding: clamp(1.25rem, 0.4577rem + 3.3803vw, 3.5rem); /* 20 → 56 */
+  --content-width: 90rem; /* 1440 */
+  --content-width-wide: 120rem; /* 1920 — full-bleed compositions */
+  --section-spacing: clamp(5.5rem, 3.2113rem + 9.7653vw, 12rem); /* 88 → 192 */
+  --section-spacing-sm: clamp(3.5rem, 2.2676rem + 5.2582vw, 7rem); /* 56 → 112 */
+  /* Homepage chapters: each composes within ~one desktop viewport. */
+  --chapter-padding: clamp(5.5rem, 4.9718rem + 2.2535vw, 7rem); /* 88 → 112 */
+  --grid-gap: clamp(1rem, 0.7359rem + 1.1268vw, 1.75rem); /* 16 → 28 */
+  --grid-columns: 4; /* 4 mobile · 8 tablet · 12 desktop — see responsive.css */
+
+  --nav-height: clamp(3.5rem, 3.1479rem + 1.5023vw, 4.5rem); /* 56 → 72 */
+  --tap-target: 2.75rem; /* 44px minimum touch target */
+
+  /* ------------------------------------------------------------------------
+     Geometry — restrained. No pills, no soft cards.
+     ------------------------------------------------------------------------ */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  --border-width: 1px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 3px;
+
+  /* ------------------------------------------------------------------------
+     Motion — mirrored in src/utils/motion.js for Framer Motion.
+     Keep both in sync.
+     ------------------------------------------------------------------------ */
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --duration-fast: 200ms;
+  --duration-normal: 450ms;
+  --duration-slow: 900ms;
+
+  /* ------------------------------------------------------------------------
+     Layering
+     ------------------------------------------------------------------------ */
+  --z-base: 1;
+  --z-menu: 90;
+  --z-nav: 100;
+  --z-skip-link: 1000;
+}

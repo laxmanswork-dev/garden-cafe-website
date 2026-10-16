@@ -1,0 +1,5 @@
+# TEMPORARY: indexing is also blocked per page via <meta name="robots"> until
+# `seo.allowIndexing` is enabled in src/data/cafeData.js at launch.
+# Add a Sitemap line once the production domain is confirmed.
+User-agent: *
+Allow: /

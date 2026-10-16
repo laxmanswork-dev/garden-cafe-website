@@ -1,0 +1,8 @@
+.not-found {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-5);
+  min-height: 100svh;
+  padding-block: calc(var(--nav-height) + var(--space-7)) var(--section-spacing-sm);
+}

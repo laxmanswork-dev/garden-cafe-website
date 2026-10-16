@@ -1,0 +1,153 @@
+/* ==========================================================================
+   04 — Visit Us · LIGHT / CLEAN
+   Asymmetric: a wide left column for the invitation and actions; a
+   narrower column of three information groups, set on hairlines; the
+   map beneath both.
+   ========================================================================== */
+
+/* Opens straight under 03's closing rule: the same short run of paper as
+   above it, rather than a second full chapter padding. The scroll margin
+   makes up the difference, so the nav's 'Visit us' link still lands the
+   label where it did, clear of the fixed nav. */
+.visit {
+  --visit-seam: clamp(3.5rem, 2.8rem + 1.6vw, 4.5rem);
+  padding-block-start: var(--visit-seam);
+  scroll-margin-top: calc(var(--chapter-padding) - var(--visit-seam));
+}
+
+.visit__layout {
+  row-gap: var(--space-7);
+}
+
+.visit__intro {
+  --span-md: 8;
+  --span-lg: 7;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+/* Desktop: the label level with the information column's top rule, the
+   heading and actions straight beneath it — one group, not spread out. */
+@media (min-width: 64em) {
+  .visit__intro {
+    gap: clamp(1.75rem, 4svh, 2.5rem);
+  }
+}
+
+.visit__intro-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.visit__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-7);
+}
+
+.visit__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   Information groups
+   -------------------------------------------------------------------------- */
+
+.visit__info {
+  --span-md: 6;
+  --start-md: 3;
+  --span-lg: 5;
+  --start-lg: 8;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+}
+
+.visit__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-block: var(--space-4) var(--space-5);
+  border-top: var(--border-width) solid var(--surface-line);
+}
+
+.visit__group dt {
+  color: var(--surface-text-muted);
+}
+
+.visit__group dd {
+  margin: 0;
+}
+
+.visit__value {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--text-body-lg);
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.visit__hours li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 var(--space-4);
+}
+
+.visit__note {
+  flex-basis: 100%;
+  font-size: var(--text-body-sm);
+  color: var(--surface-text-muted);
+}
+
+.visit__hours-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Open / closed, worked out from the hours: a quiet line, moss when open,
+   muted when closed. */
+.visit__status {
+  font-size: var(--text-body-sm);
+  letter-spacing: var(--tracking-normal);
+  color: var(--surface-text-muted);
+}
+
+.visit__status[data-open='true'] {
+  color: var(--color-moss-dark);
+}
+
+/* The map: the full content width, held low so it sits under the
+   invitation rather than over it; colours softened towards the page. */
+.visit__map {
+  grid-column: 1 / -1;
+  height: clamp(16rem, 26vw, 23.5rem);
+  overflow: hidden;
+  border: var(--border-width) solid var(--surface-line);
+  background-color: var(--color-stone-soft);
+}
+
+.visit__map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: saturate(0.7);
+}
+
+/* Clearly pending — never mistaken for real information. */
+.visit__placeholder {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-md);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--surface-text-muted);
+}

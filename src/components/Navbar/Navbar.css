@@ -1,0 +1,274 @@
+/* ==========================================================================
+   Navbar — foundation only. Structure, states and responsive behaviour are
+   in place; visual refinement happens alongside the hero.
+   ========================================================================== */
+
+.navbar {
+  --navbar-bg: transparent;
+  --navbar-fg: var(--color-text);
+  --navbar-line: transparent;
+
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--z-nav);
+  color: var(--navbar-fg);
+  background-color: var(--navbar-bg);
+  border-bottom: var(--border-width) solid var(--navbar-line);
+  transition:
+    background-color var(--duration-normal) var(--ease-standard),
+    border-color var(--duration-normal) var(--ease-standard),
+    color var(--duration-normal) var(--ease-standard);
+}
+
+/* Transparent over dark photography */
+.navbar--on-dark {
+  --navbar-fg: var(--hero-text);
+  --focus-ring-color: var(--color-text-light);
+}
+
+/* While transparent over the film, the same faint shadow as the hero
+   headline keeps the wordmark and links legible over bright patches. */
+.navbar--on-dark:not(.is-solid) .navbar__logo {
+  text-shadow: 0 1px 14px rgb(0 0 0 / 0.22);
+}
+
+/* Links only on desktop — below 1024px they live in the paper panel. */
+@media (min-width: 64em) {
+  .navbar--on-dark:not(.is-solid) .navbar__link {
+    text-shadow: 0 1px 14px rgb(0 0 0 / 0.22);
+  }
+}
+
+.navbar--on-dark:not(.is-solid) .navbar__cta {
+  --button-primary-bg: var(--color-ink);
+  --button-primary-fg: var(--color-white);
+  --button-primary-bg-hover: var(--color-ink-soft);
+}
+
+/* Solid: paper with a hairline — no shadow, no blur. */
+.navbar.is-solid {
+  --navbar-bg: var(--color-paper);
+  --navbar-fg: var(--color-text);
+  --navbar-line: var(--color-line);
+  --focus-ring-color: var(--color-ink);
+}
+
+.navbar__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  height: var(--nav-height);
+}
+
+.navbar__logo {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  font-family: var(--font-display);
+  font-size: var(--text-heading-md);
+  text-transform: uppercase;
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-wordmark);
+  line-height: 1;
+  gap: var(--space-3);
+}
+
+/* The Garden Cafe badge: 40 → 48px, always inside the bar's height. */
+.navbar__badge {
+  flex-shrink: 0;
+  width: clamp(2.5rem, 2.3592rem + 0.6009vw, 3rem);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Toggle (below 1024px)
+   -------------------------------------------------------------------------- */
+
+.navbar__toggle {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4375rem;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  margin-inline-end: calc(var(--space-3) * -1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.navbar__toggle-line {
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  background-color: currentColor;
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.navbar.is-menu-open .navbar__toggle-line:first-child {
+  transform: translateY(0.25rem) rotate(45deg);
+}
+
+.navbar.is-menu-open .navbar__toggle-line:last-child {
+  transform: translateY(-0.25rem) rotate(-45deg);
+}
+
+/* --------------------------------------------------------------------------
+   Panel — full-screen editorial menu below 1024px
+   -------------------------------------------------------------------------- */
+
+.navbar__panel {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-7);
+  padding: calc(var(--nav-height) + var(--space-6)) var(--page-padding)
+    max(var(--space-7), env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background-color: var(--color-paper);
+  color: var(--color-text);
+  visibility: hidden;
+  opacity: 0;
+  transform: translate3d(0, calc(var(--space-3) * -1), 0);
+  transition:
+    opacity var(--duration-normal) var(--ease-standard),
+    transform var(--duration-normal) var(--ease-standard),
+    visibility 0s linear var(--duration-normal);
+}
+
+.navbar.is-menu-open .navbar__panel {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--duration-normal) var(--ease-standard),
+    transform var(--duration-normal) var(--ease-standard),
+    visibility 0s linear 0s;
+}
+
+.navbar__links {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--border-width) solid var(--color-line);
+}
+
+.navbar__links li {
+  border-bottom: var(--border-width) solid var(--color-line);
+}
+
+.navbar__link {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding-block: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-heading-xl);
+  font-weight: var(--weight-light);
+  letter-spacing: var(--tracking-heading);
+  line-height: 1.1;
+}
+
+.navbar__cta {
+  align-self: flex-start;
+}
+
+/* Reserve: the same grotesk, a step firmer than the links, compact and
+   evenly tracked. The dark rectangle and its size are unchanged. */
+.navbar .navbar__cta {
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.12em;
+  font-feature-settings:
+    'case' 1,
+    'cpsp' 1;
+}
+
+/* --------------------------------------------------------------------------
+   Desktop ≥ 1024px — inline links, no toggle
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 64em) {
+  .navbar__toggle {
+    display: none;
+  }
+
+  .navbar__panel {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    /* Links, then the Reserve action set apart as its own group (64px,
+       against 32px between links). */
+    gap: var(--space-8);
+    padding: 0;
+    overflow: visible;
+    background: none;
+    color: inherit;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .navbar__links {
+    flex-direction: row;
+    /* 32px between words: 24px of gap plus each link's 4px side padding,
+       which widens short links (Home, Menu) to a 44px tap target. */
+    gap: var(--space-5);
+    border: 0;
+  }
+
+  .navbar__links li {
+    border: 0;
+  }
+
+  /* Editorial navigation type: Inter set small and medium, with measured
+     tracking and its capital-spacing features (case, cpsp), so the caps
+     read as a considered grotesk rather than default UI text. The serif
+     stays with the brand; the sans does the navigating. */
+  .navbar__link {
+    position: relative;
+    padding-block: 0;
+    padding-inline: var(--space-1);
+    font-family: var(--font-body);
+    font-size: clamp(0.6875rem, 0.6765rem + 0.0469vw, 0.71875rem); /* 11 → 11.5 */
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.14em;
+    font-feature-settings:
+      'case' 1,
+      'cpsp' 1;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .navbar__link::after {
+    content: '';
+    position: absolute;
+    /* Underline spans the word, not the padding. */
+    inset-inline: var(--space-1);
+    bottom: 0.75rem;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--duration-normal) var(--ease-standard);
+  }
+
+  .navbar__link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  .navbar__cta {
+    align-self: auto;
+  }
+}

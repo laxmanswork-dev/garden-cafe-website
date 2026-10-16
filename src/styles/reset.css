@@ -1,0 +1,108 @@
+/* ==========================================================================
+   Reset — removes browser inconsistencies without flattening useful
+   defaults (e.g. <strong>, <em>, form semantics are left alone).
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* Media are block-level and never overflow their container. */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+/* Form controls and buttons inherit typography instead of UA defaults. */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/* Headings inherit; the type scale in typography.css assigns size/weight.
+   This keeps semantic level independent of visual size. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* Only lists used as UI (nav, galleries) drop their bullets. Content lists
+   keep list semantics in Safari/VoiceOver thanks to the role selector.
+   :where() keeps specificity at zero so components can always restyle. */
+:where(ul[role='list'], ol[role='list'], nav ul, nav ol) {
+  list-style: none;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+[hidden] {
+  display: none !important;
+}

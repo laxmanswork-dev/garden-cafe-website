@@ -1,0 +1,24 @@
+.responsive-image {
+  position: relative;
+  /* Quiet tone while the photo loads — never a spinner or shimmer. */
+  background-color: var(--color-stone);
+}
+
+.responsive-image--framed {
+  aspect-ratio: var(--image-ratio);
+  overflow: hidden;
+}
+
+.responsive-image picture {
+  display: contents;
+}
+
+.responsive-image img {
+  width: 100%;
+}
+
+.responsive-image--framed img {
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-position, 50% 50%);
+}

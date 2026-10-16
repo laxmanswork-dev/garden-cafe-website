@@ -1,0 +1,333 @@
+/* ==========================================================================
+   01 — Hero · LIGHT / CENTRED
+   Brand, headline, action — one tight central composition on warm paper.
+   A muted garden film plays behind, shaded dark so the light type stays legible.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  /* Clear the navbar above; the group (brand → food moment) is centred in
+     what remains, then lifted as one piece (12 → 24px): the lift moves from
+     the top padding to the bottom, so the hero's height never changes. */
+  --hero-lift: clamp(0.75rem, 0.486rem + 1.1268vw, 1.5rem);
+  padding-block: calc(var(--nav-height) + var(--space-5) - var(--hero-lift))
+    calc(var(--space-8) + var(--hero-lift));
+  padding-inline: var(--page-padding);
+  overflow: hidden;
+  /* New stacking context so the film's negative z-index stays inside. */
+  isolation: isolate;
+
+  /* Space between the headline and the action: 40 → 56px. */
+  --hero-action-gap: clamp(2.5rem, 2.1479rem + 1.5023vw, 3.5rem);
+
+  /* Invisible glass — shared by the headline group and the photographs.
+     A whisper of light, every side fading to nothing: felt, not seen. */
+  --glass-tint: rgb(255 255 255 / 0.07);
+  --glass-mask-x: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  --glass-mask-y: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}
+
+/* The glass layer itself; each area sets only its own extent (inset). */
+.hero__headline::after,
+.hero .garland::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--glass-tint);
+  -webkit-mask-image: var(--glass-mask-x), var(--glass-mask-y);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--glass-mask-x), var(--glass-mask-y);
+  mask-composite: intersect;
+}
+
+/* Background film — fills the hero, sits behind the content. */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.hero__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* No CSS filter: the clean grade is baked into the file, and any blur or
+     desaturation here would soften it again. */
+}
+
+/* The shade over the whole film: a vertical veil — 45% at the top, where
+   the bright ceiling and fixtures sit; 25% through the middle; 60% at the
+   foot — so the ivory type and white frames hold contrast as the film's
+   brightness shifts frame to frame. */
+.hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.45) 0%,
+    rgb(0 0 0 / 0.25) 50%,
+    rgb(0 0 0 / 0.6) 100%
+  );
+}
+
+/* A soft floor to the film: black at 55% along the bottom edge, fading to
+   nothing 45% of the way up, so the photographs and the "Garden" signature
+   stand crisp over the bright paving. Part of the media layer, so it sits
+   behind all hero content. */
+.hero__media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.55) 0%, rgb(0 0 0 / 0) 45%);
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Full width so the food photographs size from the page,
+     not from their own content (children stay centred). */
+  width: 100%;
+  text-align: center;
+}
+
+/* The headline — the primary focus. Upright Cormorant, regular weight. */
+.hero__headline {
+  display: flex;
+  flex-direction: column;
+  /* Never wider than the page's content column. */
+  max-width: 100%;
+  font-family: var(--font-display);
+  /* 38 → 66px: the hero's first read. The longer first line holds a
+     deliberate central width (~800px at 1440) rather than spanning the
+     page. On phones it stays strong and the long line wraps, balanced. */
+  font-size: clamp(2.375rem, 1.7535rem + 2.6516vw, 4.125rem);
+  /* One step firmer than regular, so Cormorant's hairlines hold over
+     bright sky and sunlit leaves. */
+  font-weight: var(--weight-medium);
+  /* Set tighter as it grows: two lines that read as one statement. */
+  line-height: 1.06;
+  letter-spacing: -0.018em;
+  /* Warm ivory, set straight on the film. */
+  color: var(--hero-text);
+  /* A tight shadow edges the strokes; a soft one lifts the words off the
+     film. Neither reads as an effect. */
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.24),
+    0 2px 18px rgb(0 0 0 / 0.34);
+}
+
+/* Local contrast: a soft dark dip centred between the headline and the
+   action, fading to nothing well inside its box so no edge shows. It sits
+   just above the film (z-index -1 in the hero's stacking context), below
+   all content, and stops above the food photographs. */
+/* Invisible glass behind the headline and the action together — one pane,
+   drawn from the headline and reaching down past the button. No edge, no
+   blur; it sits above the film and the contrast dip, below the type. */
+.hero__headline::after {
+  inset: -2.5rem -2rem calc(-1 * (var(--hero-action-gap) + var(--tap-target) + 2.75rem));
+}
+
+.hero__headline::before {
+  content: '';
+  position: absolute;
+  inset: -40% -18% -110%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(20 20 18 / 0.34) 0%,
+    rgb(20 20 18 / 0.16) 42%,
+    rgb(20 20 18 / 0) 72%
+  );
+}
+
+/* Phones frame the brightest sky behind the headline and action, so the
+   local dip deepens a little there — still only around the words. */
+@media (max-width: 47.99em) {
+  .hero__headline::before {
+    background: radial-gradient(
+      ellipse at center,
+      rgb(20 20 18 / 0.4) 0%,
+      rgb(20 20 18 / 0.19) 42%,
+      rgb(20 20 18 / 0) 72%
+    );
+  }
+}
+
+/* Our story — the secondary action: an outline button. A near-solid
+   ivory hairline and ivory type over a soft dark fill that lightly blurs
+   the leaves behind it, so it holds on bright foliage; fills to ivory with
+   ink type on hover. Same compact 44px size as View menu, which stays the
+   stronger of the two. */
+.hero .hero__actions .button--secondary {
+  --button-height: var(--tap-target);
+  --button-padding-x: 1.125rem;
+  --button-bg: rgb(20 20 18 / 0.3);
+  --button-fg: var(--hero-text);
+  --button-border: rgb(241 235 221 / 0.95);
+  --button-bg-hover: var(--hero-text);
+  --button-fg-hover: var(--color-ink);
+  --button-border-hover: var(--hero-text);
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.3);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+@media (hover: hover) {
+  .hero .hero__actions .button--secondary:hover {
+    text-shadow: none;
+  }
+}
+
+/* View menu — the primary action: black filled, the same ink as the
+   navbar's Reserve, the same compact size as Explore. (The hero is
+   a dark surface, which would otherwise invert a primary button to paper.) */
+.hero .hero__actions .hero__menu-link {
+  --button-height: var(--tap-target);
+  --button-padding-x: 1.125rem;
+  --button-bg: var(--color-ink);
+  --button-fg: var(--color-text-light);
+  --button-border: var(--color-ink);
+  --button-bg-hover: var(--color-moss-dark);
+  --button-fg-hover: var(--color-text-light);
+  --button-border-hover: var(--color-moss-dark);
+  font-size: 0.75rem;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.14),
+    0 4px 14px -6px rgb(0 0 0 / 0.32);
+  /* Colour follows the Button's 200ms; the lift and glow ease in over
+     300ms on the site's standard curve — transform and shadow only. */
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform 300ms var(--ease-standard),
+    box-shadow 300ms var(--ease-standard);
+}
+
+/* Hover: a 1px lift and a soft warm-ivory glow around the black. */
+@media (hover: hover) and (pointer: fine) {
+  .hero .hero__actions .hero__menu-link:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.16),
+      0 8px 20px -8px rgb(0 0 0 / 0.4),
+      0 0 0 4px rgb(241 235 221 / 0.12),
+      0 0 22px rgb(241 235 221 / 0.18);
+  }
+}
+
+/* Headline and action sit a little lower (16 → 32px). A relative offset
+   moves only these two; the photographs keep their place, with ~70px of
+   air left between the action and the garden line. The headline's
+   position also anchors its local contrast layer (::before). */
+.hero {
+  /* 36 → 52px: the headline group's offset, a little lower than before. */
+  --hero-group-offset: calc(clamp(1rem, 0.6479rem + 1.5023vw, 2rem) + 1.25rem);
+}
+
+.hero__eyebrow,
+.hero__headline,
+.hero__actions {
+  position: relative;
+  top: var(--hero-group-offset);
+}
+
+/* The headline alone sits a further 10px lower, a touch closer to the
+   action; the button and everything below stay where they are. The
+   eyebrow travels with it. */
+.hero__eyebrow,
+.hero__headline {
+  top: calc(var(--hero-group-offset) + 0.625rem);
+}
+
+/* Eyebrow — a quiet descriptor above the h1: small spaced capitals in a
+   softened ivory, never competing with the headline (16 → 20px above it). */
+.hero__eyebrow {
+  margin-block-end: clamp(1rem, 0.912rem + 0.3756vw, 1.25rem);
+  color: rgb(241 235 221 / 0.86);
+  text-shadow: 0 1px 10px rgb(0 0 0 / 0.4);
+}
+
+/* Each approved line rises from behind its own mask. Flex column keeps the
+   masks' negative margins from collapsing into extra leading. */
+.hero__line {
+  display: block;
+  overflow: clip;
+  padding-block: 0.1em;
+  margin-block: -0.1em;
+}
+
+.hero__line-inner {
+  display: block;
+  /* When a line wraps on phones, split it evenly rather than orphaning. */
+  text-wrap: balance;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  /* Restrained: the two buttons sit close together, never across the page
+     (12 → 16px). */
+  gap: var(--space-3) clamp(0.75rem, 0.662rem + 0.3756vw, 1rem);
+  /* The headline finishes, then the action follows. */
+  margin-block-start: var(--hero-action-gap);
+}
+
+/* Small phones: a touch less side padding keeps the pair on one row. */
+@media (max-width: 26.24em) {
+  .hero .hero__actions .button {
+    --button-padding-x: 0.875rem;
+  }
+}
+
+.hero__food {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  /* Breathing room between the action and the photographs: 80 → 120px,
+     so the "Garden" signature is never crowded by the buttons.
+     It is real layout space, so on short screens the hero grows and the
+     frames run on toward the next chapter rather than being clipped. */
+  margin-block-start: clamp(5rem, 4.1197rem + 3.7559vw, 7.5rem);
+}
+
+/* Invisible glass behind the six photographs and their marks — only that
+   area (layer defined with the headline's, above). */
+.hero .garland {
+  position: relative;
+}
+
+.hero .garland::before {
+  inset: -2.5rem -1.5rem -2.75rem;
+}
+
+/* Short laptop screens (under 640px tall — e.g. 1366 × 768 at 125% zoom):
+   a little less air above the photographs, so the whole row stays on
+   screen, and the headline group drops its downward nudge so the action
+   stays clear of the "Garden" signature. */
+@media (min-width: 64em) and (max-height: 40em) {
+  .hero {
+    --hero-group-offset: 0rem;
+    /* No lift here: the group already fills the screen. */
+    --hero-lift: 0rem;
+  }
+
+  .hero__food {
+    margin-block-start: 3.5rem;
+  }
+}

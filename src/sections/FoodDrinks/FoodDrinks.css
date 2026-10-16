@@ -1,0 +1,348 @@
+/* ==========================================================================
+   03 — Food & Drinks · a way into the menu
+   The label and the heading; one row of four categories from the
+   verified menu, a rule sliding beneath it to the chosen one; then four of
+   that category's dishes: one large, three small. Unframed, square-edged
+   photographs — set apart from The Cafe's mounted prints — at fixed
+   proportions, so a category change never moves the page.
+
+   Phones (< 768px): the row of categories scrolls sideways, bleeding to the
+     screen's edges; the large dish above the other three.
+   Tablets (≥ 768px): the four categories fit side by side.
+   Desktop (≥ 1024px): the large dish takes two thirds of the width, the
+     other three stand in a column beside it, the same height.
+   ========================================================================== */
+
+.food {
+  --chapter-min-height: auto;
+  /* The rule into 04 — Visit Us: a shorter run of paper beneath the dishes
+     than a full chapter's padding (~56 → 68px, was 88 → 112). */
+  padding-block-end: clamp(3.5rem, 2.8rem + 1.6vw, 4.5rem);
+  /* How long one category's dishes take to fade in over the last. */
+  --food-fade: 0.7s;
+}
+
+.food__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+/* The heading, then the link to the complete menu beneath it (beside it on
+   desktop). */
+.food__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+
+.food__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* The section's heading: one sentence at the site's heading-xl size, held
+   to a measure that breaks it into two balanced lines on desktop. */
+.food__headline {
+  max-width: 20em;
+}
+
+.food__menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   The categories
+   -------------------------------------------------------------------------- */
+
+/* Phones: one row that scrolls sideways, running to the screen's edges, so
+   the cut-off last category shows there is more. Never a page scrollbar. */
+.food__tabs {
+  position: relative;
+  display: flex;
+  gap: var(--space-6);
+  margin-inline: calc(-1 * var(--page-padding));
+  padding-inline: var(--page-padding);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--page-padding);
+  scrollbar-width: none;
+  /* The row's hairline, drawn inside so it scrolls with nothing. */
+  box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--surface-line);
+}
+
+.food__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.food__tab {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding-block: var(--space-3) var(--space-4);
+  border: 0;
+  background: none;
+  color: var(--surface-text-muted);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.food__tab[aria-selected='true'] {
+  color: var(--surface-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .food__tab:hover {
+    color: var(--surface-text);
+  }
+}
+
+.food__tab-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.15rem + 0.9vw, 1.75rem);
+  font-weight: var(--weight-regular);
+  line-height: 1.1;
+}
+
+.food__tab-count {
+  grid-column: 2;
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-normal);
+}
+
+/* The rule beneath the chosen category; it slides to the next one. */
+.food__indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: var(--surface-text);
+  pointer-events: none;
+  transition:
+    transform 0.6s var(--ease-in-out),
+    width 0.6s var(--ease-in-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .food__indicator {
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The dishes
+   -------------------------------------------------------------------------- */
+
+/* The four categories' dishes share one grid cell. The chosen one fades
+   in on top; the one it replaces stays fully visible beneath until it is
+   covered, then hides — a crossfade with no flash of empty frames. */
+.food__panel {
+  display: grid;
+}
+
+.food__dishes {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0s linear var(--food-fade),
+    visibility 0s linear var(--food-fade);
+}
+
+.food__dishes[data-active='true'] {
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--food-fade) var(--ease-in-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .food__dishes,
+  .food__dishes[data-active='true'] {
+    transition: none;
+  }
+}
+
+.food__dish {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.food__photo {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--color-stone-soft);
+}
+
+.food__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+}
+
+.food__dish-name {
+  font-size: var(--text-body-sm);
+  line-height: 1.35;
+  color: var(--surface-text);
+}
+
+.food__dish--lead .food__dish-name {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-md);
+  line-height: 1.15;
+}
+
+.food__more {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+/* --------------------------------------------------------------------------
+   Tablets (≥ 768px): the four categories side by side, no scrolling.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 48em) {
+  .food__tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  .food__tab {
+    white-space: normal;
+  }
+
+  .food__more {
+    gap: var(--space-4);
+  }
+
+  /* A wider frame for the large dish, so it does not fill the screen. */
+  .food__dish--lead .food__photo {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Desktop (≥ 1024px): the large dish and a column of three beside it.
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 64em) {
+  /* Tightened to the screen's height, as in 02 — The Cafe. */
+  .food {
+    padding-block-start: calc(var(--nav-height) + clamp(1rem, 3.5svh, 2.25rem));
+  }
+
+  .food__inner {
+    gap: clamp(2rem, 4.5svh, 2.75rem);
+  }
+
+  .food__intro {
+    gap: clamp(0.75rem, 2svh, 1.25rem);
+  }
+
+  /* The categories and dishes span the full content width. */
+  .food__menu {
+    gap: clamp(1.5rem, 3.25svh, 2rem);
+  }
+
+  .food__tab-name {
+    font-size: clamp(1.5rem, 0.9rem + 1vw, 2rem);
+  }
+
+  /* The photographs' own 3:2 proportion. */
+  .food__photo {
+    aspect-ratio: 3 / 2;
+  }
+
+  /* The large dish in a 2:1 frame (cropped a little top and bottom), so
+     the categories, the large dish and the three smaller ones fit a
+     1440 × 900 screen together. */
+  .food__dish--lead .food__photo {
+    aspect-ratio: 2 / 1;
+  }
+
+  /* Two thirds and one third: with a 2:1 large photograph, a square column
+     one third wide is exactly the large photograph's height, so the three
+     smaller dishes span it top to bottom. */
+  .food__dishes {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    column-gap: var(--space-5);
+    align-items: start;
+  }
+
+  .food__more {
+    aspect-ratio: 1 / 1;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(3, auto);
+    align-content: space-between;
+    gap: 0;
+  }
+
+  .food__more .food__dish {
+    display: grid;
+    grid-template-columns: 57% minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 1.7vw, 1.5rem);
+  }
+
+  /* Wider than the large photograph's 3:2, at the same height as before
+     (57% at 15:8 ≈ 46% at 3:2), so the three still span the column. */
+  .food__more .food__photo {
+    aspect-ratio: 15 / 8;
+  }
+
+  /* Room after the name, so it never runs to the page's edge. */
+  .food__more .food__dish-name {
+    padding-inline-end: clamp(0.75rem, 2vw, 1.5rem);
+  }
+
+  /* The label and heading on the left; the link to the complete menu on
+     the right, centred on the heading's first line. The intro's two parts
+     join the grid, so the link lines up with the heading itself. */
+  .food__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-7);
+    row-gap: clamp(0.75rem, 2svh, 1.25rem);
+  }
+
+  .food__intro {
+    display: contents;
+  }
+
+  .food__intro > * {
+    grid-column: 1;
+  }
+
+  .food__cta {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    /* Centre the 48px button on the heading's first line. */
+    margin-top: max(0px, calc((var(--text-heading-xl) * var(--leading-heading) - 3rem) / 2));
+  }
+}

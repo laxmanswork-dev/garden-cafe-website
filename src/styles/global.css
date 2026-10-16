@@ -1,0 +1,143 @@
+/* ==========================================================================
+   Global — document-level behaviour and accessibility foundations.
+   ========================================================================== */
+
+html {
+  background-color: var(--color-paper);
+  color: var(--color-text);
+  /* Page scrollbar: thin, ink thumb on a paper track. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink) var(--color-paper);
+}
+
+/* Safari (no standard scrollbar properties yet). */
+/* Large displays (1920px and wider): the whole rem-based system grows with
+   the screen — 16px at 1920, ~21px at 2560, 32px at 3840 — so a 4K monitor
+   or TV shows the same composition, larger, rather than a 1440px layout
+   marooned in the middle. The 100% floor keeps the reader's own font-size
+   setting; em media queries are unaffected. */
+@media (min-width: 120em) {
+  html {
+    font-size: max(100%, 100vw / 120);
+  }
+}
+
+html::-webkit-scrollbar {
+  width: 6px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: var(--color-paper);
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: var(--color-ink);
+}
+
+/* Anchor targets clear the fixed navbar (native scroll, Lenis and
+   scrollIntoView all respect scroll-margin). Homepage chapters override
+   this: their own top padding already clears the bar, so they land flush
+   and the composition fills the viewport exactly. */
+[id] {
+  scroll-margin-top: var(--nav-height);
+}
+
+/* Native smooth scrolling only when Lenis is not driving scroll and the
+   user has not asked for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: var(--surface-bg);
+  color: var(--surface-text);
+  /* `clip` (not `hidden`) prevents horizontal overflow without creating a
+     scroll container, so position: sticky keeps working. */
+  overflow-x: clip;
+}
+
+#root {
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+main {
+  flex: 1;
+}
+
+/* Scroll lock (mobile menu). Lenis is also stopped by the scroll controller. */
+html.is-scroll-locked {
+  overflow: hidden;
+}
+
+::selection {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-text);
+}
+
+/* --------------------------------------------------------------------------
+   Focus — always visible for keyboard users, never for mouse clicks.
+   The ring colour follows the surface (see .surface-ink).
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Programmatic focus targets (main, anchored sections) receive focus for
+   screen readers but should not show a ring around a whole region. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Skip link — first focusable element on every page.
+   -------------------------------------------------------------------------- */
+
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: var(--z-skip-link);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-ink);
+  color: var(--color-text-light);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-sm);
+  transform: translateY(calc(-100% - var(--space-4)));
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+  outline-color: var(--color-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Inline prose links — understated underline that strengthens on hover.
+   Opt-in via .link so navigation/buttons are unaffected.
+   -------------------------------------------------------------------------- */
+
+.link {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--surface-line);
+  transition: text-decoration-color var(--duration-fast) var(--ease-standard);
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+hr {
+  border: 0;
+  border-top: var(--border-width) solid var(--surface-line);
+}

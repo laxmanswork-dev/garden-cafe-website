@@ -1,0 +1,18 @@
+/* Adapts to its surface: a slightly deeper tone of whatever it sits on. */
+.image-placeholder {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--placeholder-ratio);
+  background-color: color-mix(in srgb, var(--surface-text) 6%, var(--surface-bg));
+  outline: var(--border-width) solid var(--surface-line);
+  outline-offset: calc(var(--border-width) * -1);
+}
+
+.image-placeholder__label {
+  padding: var(--space-3);
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-label);
+  text-align: center;
+  color: var(--surface-text-muted);
+}

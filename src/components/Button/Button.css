@@ -1,0 +1,152 @@
+/* ==========================================================================
+   Button — restrained geometry, quiet states.
+   Colours come from --button-* tokens so surfaces can remap them.
+   ========================================================================== */
+
+.button {
+  --button-bg: transparent;
+  --button-fg: var(--surface-text);
+  --button-border: transparent;
+  --button-bg-hover: var(--button-bg);
+  --button-fg-hover: var(--button-fg);
+  --button-border-hover: var(--button-border);
+  --button-height: 3rem;
+  --button-padding-x: var(--space-5);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: max(var(--button-height), var(--tap-target));
+  padding-inline: var(--button-padding-x);
+  border: var(--border-width) solid var(--button-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-ui);
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.button__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.button__icon svg {
+  width: 1.4em;
+  height: 1.4em;
+  stroke-width: 1.25;
+}
+
+/* Sizes — all remain ≥ 44px tall for touch. */
+.button--sm {
+  --button-height: 2.75rem;
+  --button-padding-x: var(--space-4);
+}
+
+.button--lg {
+  --button-height: 3.5rem;
+  --button-padding-x: var(--space-6);
+}
+
+/* Variants -------------------------------------------------------------- */
+
+.button--primary {
+  --button-bg: var(--button-primary-bg, var(--color-ink));
+  --button-fg: var(--button-primary-fg, var(--color-text-light));
+  --button-border: var(--button-bg);
+  --button-bg-hover: var(--button-primary-bg-hover, var(--color-moss-dark));
+  --button-border-hover: var(--button-bg-hover);
+}
+
+.button--secondary {
+  --button-border: var(--surface-text);
+  --button-bg-hover: var(--surface-text);
+  --button-fg-hover: var(--surface-bg);
+}
+
+.button--text {
+  --button-padding-x: 0;
+  --button-height: var(--tap-target);
+  border-radius: 0;
+}
+
+/* Underline drawn with a transform so it animates without layout cost. */
+.button--text .button__label {
+  position: relative;
+  padding-block: 0.25em;
+}
+
+.button--text .button__label::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: currentColor;
+  transform-origin: left center;
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.button--icon {
+  --button-border: var(--surface-line);
+  --button-border-hover: var(--surface-text);
+  --button-padding-x: 0;
+  width: max(var(--button-height), var(--tap-target));
+}
+
+/* Dark surfaces invert the primary button. */
+.surface-ink .button,
+.button.on-dark {
+  --button-primary-bg: var(--color-paper);
+  --button-primary-fg: var(--color-ink);
+  --button-primary-bg-hover: var(--color-stone);
+}
+
+/* States ---------------------------------------------------------------- */
+
+@media (hover: hover) {
+  .button:hover:not(.is-disabled) {
+    background-color: var(--button-bg-hover);
+    border-color: var(--button-border-hover);
+    color: var(--button-fg-hover);
+  }
+
+  .button:hover:not(.is-disabled) .button__icon--end {
+    transform: translateX(0.1875rem);
+  }
+
+  .button--text:hover:not(.is-disabled) .button__label::after {
+    transform: scaleX(0.35);
+  }
+}
+
+.button:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.button:active:not(.is-disabled) {
+  transform: translateY(1px);
+}
+
+.button.is-disabled,
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

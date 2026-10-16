@@ -1,0 +1,12 @@
+.magnetic {
+  display: inline-flex;
+  /* Slightly larger hit area than the button so the pull starts before the
+     pointer reaches the edge. */
+  padding: var(--space-2);
+  margin: calc(var(--space-2) * -1);
+}
+
+.magnetic__inner {
+  display: inline-flex;
+  will-change: transform;
+}

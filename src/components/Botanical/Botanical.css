@@ -1,0 +1,14 @@
+.botanical {
+  display: block;
+  width: 100%;
+  height: auto;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+
+.botanical path {
+  vector-effect: non-scaling-stroke;
+}

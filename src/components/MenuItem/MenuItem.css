@@ -1,0 +1,44 @@
+/* ==========================================================================
+   MenuItem — photograph, number, name.
+   ========================================================================== */
+
+.menu-item {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.menu-item .menu-image {
+  margin-block-end: var(--space-2);
+}
+
+.menu-item__number {
+  color: var(--surface-text-muted);
+}
+
+.menu-item__name {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-md);
+  font-weight: var(--weight-regular);
+  line-height: 1.15;
+  letter-spacing: var(--tracking-tight);
+  transition: transform 0.6s var(--ease-standard);
+}
+
+/* Order on WhatsApp: the outline Button, at its own width, a step below
+   the name. */
+.menu-item__order {
+  justify-self: start;
+  margin-block-start: var(--space-2);
+}
+
+/* Hover (mouse only): the photograph draws a fraction closer inside its
+   frame and the name eases in. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .menu-item:hover .menu-image__img {
+    transform: scale(1.03);
+  }
+
+  .menu-item:hover .menu-item__name {
+    transform: translateX(6px);
+  }
+}

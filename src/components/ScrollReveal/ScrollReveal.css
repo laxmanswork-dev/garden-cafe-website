@@ -1,0 +1,12 @@
+.scroll-reveal--mask {
+  display: block;
+  overflow: clip;
+  /* Room above and below the line box so the clip never cuts ascenders,
+     accents or descenders at rest (display type uses tight leading). */
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+}
+
+.scroll-reveal__inner {
+  display: block;
+}

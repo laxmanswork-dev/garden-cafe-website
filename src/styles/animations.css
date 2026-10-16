@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Motion — CSS side of the motion system.
+
+   Principles: subtle · slow · physical · intentional.
+   - Animate transform and opacity only. Never width/height/top/left.
+   - Use --ease-standard and the three durations; no ad-hoc timings.
+   - Scroll-driven and entrance motion lives in Framer Motion
+     (src/utils/motion.js, ScrollReveal, PageTransition); CSS handles
+     hover/focus state transitions.
+   ========================================================================== */
+
+/* Shared CSS keyframes go here when a component needs one. Keep them few. */
+
+/* --------------------------------------------------------------------------
+   Reduced motion — honoured globally. Framer Motion is configured with
+   reducedMotion="user" (transforms become instant, opacity still fades) and
+   Lenis is not initialised. CSS transitions and animations collapse here.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-normal: 0.01ms;
+    --duration-slow: 0.01ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
