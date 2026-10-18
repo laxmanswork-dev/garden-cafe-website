@@ -96,6 +96,18 @@
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 
+/* Phones and tablets: the strip runs the full width of the screen, out
+   past the page's side padding, so the frames arrive and leave at the
+   screen's own edges through the soft fade — a deliberate carousel, not a
+   row cut short just inside the page. (Desktop keeps its 66rem window,
+   where all seven fit.) The hero clips sideways, so nothing scrolls. */
+@media (max-width: 63.99em) {
+  .garland-strip {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+  }
+}
+
 .garland-track {
   display: flex;
   width: max-content;
@@ -183,6 +195,14 @@
 
   .garland {
     padding-inline: 0;
+  }
+}
+
+/* …and on full-width phones and tablets, the still row keeps the page's
+   side margin, so the first and last frames never touch the screen edge. */
+@media (prefers-reduced-motion: reduce) and (max-width: 63.99em) {
+  .garland-track {
+    padding-inline: var(--page-padding);
   }
 }
 
