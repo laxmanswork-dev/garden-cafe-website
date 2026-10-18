@@ -24,15 +24,15 @@
   /* Space between the headline and the action: 40 → 56px. */
   --hero-action-gap: clamp(2.5rem, 2.1479rem + 1.5023vw, 3.5rem);
 
-  /* Invisible glass — shared by the headline group and the photographs.
-     A whisper of light, every side fading to nothing: felt, not seen. */
+  /* Invisible glass behind the photographs. A whisper of light, every side
+     fading to nothing: felt, not seen. (Not behind the text: a white tint
+     there lifts the film behind ivory type — see the backing below.) */
   --glass-tint: rgb(255 255 255 / 0.07);
   --glass-mask-x: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
   --glass-mask-y: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
 }
 
-/* The glass layer itself; each area sets only its own extent (inset). */
-.hero__headline::after,
+/* The glass layer itself; it sets only its own extent (inset, below). */
 .hero .garland-strip::before {
   content: '';
   position: absolute;
@@ -116,57 +116,68 @@
   color: var(--hero-text);
 }
 
-/* The signature's size: its height, 128 → 256px, growing with the screen
-   (the width follows, about 1.9×: ~245px on phones, ~455px at 1440 — wider
-   than the old two-line headline, so it leads), and capped on very wide
-   screens so it never outgrows the centre column. */
+/* The signature's size: its height, 88 → 176px, growing with the screen
+   (the width follows, about 1.9×: ~165px on phones, ~315px at 1440) —
+   the hero's focal point, refined rather than dominant; capped on very
+   wide screens. */
 .hero__signature {
   display: block;
-  /* …and never more than a third of the screen's height, so on short
-     screens (phones held sideways) the actions stay in the first view. */
-  font-size: min(clamp(8rem, 5.4rem + 10.67vw, 16rem), 32svh);
+  /* …and never more than about a fifth of the screen's height, so on
+     short screens (laptops, phones held sideways) the whole composition
+     stays in view. */
+  font-size: min(clamp(5.5rem, 3.73rem + 7.35vw, 11rem), 22svh);
   line-height: 1;
   /* Two shadows hold the fine pen lines over bright leaves and sky, frame
      to frame: a tight edge, and a soft lift. Neither reads as an effect. */
   filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.45)) drop-shadow(0 2px 14px rgb(0 0 0 / 0.38));
 }
 
-/* Local contrast: a soft dark dip centred between the headline and the
-   action, fading to nothing well inside its box so no edge shows. It sits
-   just above the film (z-index -1 in the hero's stacking context), below
-   all content, and stops above the food photographs. */
-/* Invisible glass behind the headline and the action together — one pane,
-   drawn from the headline and reaching down past the button. No edge, no
-   blur; it sits above the film and the contrast dip, below the type. */
-.hero__headline::after {
-  inset: -2.5rem -2rem calc(-1 * (var(--hero-action-gap) + var(--tap-target) + 2.75rem));
+/* The supporting line — the original words, secondary to the signature
+   but plainly readable: Inter at 15 → 19px (~18px at 1440) in warm ivory,
+   set just under the signature so the two read as one mark. One line
+   where it fits; on narrow phones it wraps in two even halves. A tight
+   shadow edges the letters and a soft one lifts them, so the line holds
+   over the bright roof and leaves as well as the dark pillar. */
+.hero__tagline {
+  max-width: 100%;
+  margin-block-start: clamp(0.5rem, 0.41rem + 0.38vw, 0.75rem);
+  font-family: var(--font-body);
+  font-size: clamp(0.9375rem, 0.88rem + 0.256vw, 1.1875rem);
+  font-weight: var(--weight-regular);
+  line-height: 1.45;
+  letter-spacing: 0.005em;
+  color: rgb(241 235 221 / 0.97);
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.35),
+    0 1px 12px rgb(0 0 0 / 0.45);
+  text-wrap: balance;
 }
 
+/* The text's backing: one broad, feathered charcoal shade behind the
+   label, signature, supporting line and buttons — and nothing else (it
+   ends above the photographs). Darkest at the centre (28%), easing to
+   nothing exactly at its edges (closest-side), so no edge or panel ever
+   shows and the film stays clear around it. Measured over the film's
+   frames, it raises the ivory text's contrast everywhere (the supporting
+   line from ~5.0 to ~6.1:1 typical, its brightest frames from ~2.9 to
+   ~3.6:1) without the scene reading darker. Anchored to the h1, it sits
+   just above the film (z-index -1 in the hero's stacking context), below
+   all content, and never takes a click. */
 .hero__headline::before {
   content: '';
   position: absolute;
-  inset: -40% -18% -110%;
+  /* From above the label to below the buttons; wide enough that the
+     supporting line sits well inside it. */
+  inset: -5rem -9rem calc(-1 * (var(--hero-action-gap) + var(--tap-target) + 6rem));
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(
-    ellipse at center,
-    rgb(20 20 18 / 0.34) 0%,
-    rgb(20 20 18 / 0.16) 42%,
-    rgb(20 20 18 / 0) 72%
+    closest-side,
+    rgb(20 20 18 / 0.28) 0%,
+    rgb(20 20 18 / 0.2) 40%,
+    rgb(20 20 18 / 0.09) 72%,
+    rgb(20 20 18 / 0) 100%
   );
-}
-
-/* Phones frame the brightest sky behind the headline and action, so the
-   local dip deepens a little there — still only around the words. */
-@media (max-width: 47.99em) {
-  .hero__headline::before {
-    background: radial-gradient(
-      ellipse at center,
-      rgb(20 20 18 / 0.4) 0%,
-      rgb(20 20 18 / 0.19) 42%,
-      rgb(20 20 18 / 0) 72%
-    );
-  }
 }
 
 /* Our story — the secondary action: an outline button. A near-solid
@@ -245,6 +256,7 @@
 
 .hero__eyebrow,
 .hero__headline,
+.hero__tagline,
 .hero__actions {
   position: relative;
   top: var(--hero-group-offset);
@@ -252,18 +264,24 @@
 
 /* The headline alone sits a further 10px lower, a touch closer to the
    action; the button and everything below stay where they are. The
-   eyebrow travels with it. */
+   eyebrow and the supporting line travel with it. */
 .hero__eyebrow,
-.hero__headline {
+.hero__headline,
+.hero__tagline {
   top: calc(var(--hero-group-offset) + 0.625rem);
 }
 
-/* Eyebrow — a quiet descriptor above the h1: small spaced capitals in a
-   softened ivory, never competing with the headline (16 → 20px above it). */
+/* Eyebrow — the descriptor above the signature: spaced capitals a step
+   larger than the site's other eyebrows (13 → 15px, here only), in a
+   firmer ivory with the supporting line's shadow, so it reads at a glance
+   without competing with the signature (14 → 18px above it). */
 .hero__eyebrow {
-  margin-block-end: clamp(1rem, 0.912rem + 0.3756vw, 1.25rem);
-  color: rgb(241 235 221 / 0.86);
-  text-shadow: 0 1px 10px rgb(0 0 0 / 0.4);
+  margin-block-end: clamp(0.875rem, 0.79rem + 0.36vw, 1.125rem);
+  font-size: clamp(0.8125rem, 0.76rem + 0.22vw, 0.9375rem);
+  color: rgb(241 235 221 / 0.93);
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.35),
+    0 1px 12px rgb(0 0 0 / 0.45);
 }
 
 .hero__actions {

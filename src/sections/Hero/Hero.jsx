@@ -157,6 +157,11 @@ export default function Hero() {
           </m.span>
         </h1>
 
+        {/* The original line, now a quiet support beneath the signature. */}
+        <m.p className="hero__tagline" {...fadeUp(0.35)}>
+          {hero.headline.join(' ')}
+        </m.p>
+
         <m.div className="hero__actions" {...fadeUp(0.55)}>
           {/* Primary: the menu — what most visitors come for first. Black
               filled, like the navbar's Reserve. */}
