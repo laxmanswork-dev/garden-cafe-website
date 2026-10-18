@@ -41,7 +41,17 @@ function useSectionInView(ids) {
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((entry) => entry.isIntersecting)
-        if (visible.length > 0) setCurrent(visible[0].target.id)
+        if (visible.length > 0) {
+          setCurrent(visible[0].target.id)
+          return
+        }
+        // Nothing in the band: above the first section (back at the page
+        // heading, e.g. after Home or a jump to the top), the first one
+        // leads again rather than the last one passed on the way down.
+        const first = document.getElementById(ids[0])
+        if (first && first.getBoundingClientRect().top > window.innerHeight * 0.25) {
+          setCurrent(ids[0])
+        }
       },
       { rootMargin: '-25% 0px -70% 0px' },
     )

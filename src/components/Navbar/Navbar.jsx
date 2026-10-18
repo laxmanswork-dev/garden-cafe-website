@@ -106,7 +106,7 @@ export default function Navbar({ variant = 'transparent', tone = 'dark' }) {
           {/* The badge is decorative next to the wordmark, which names the link. */}
           <img
             className="navbar__badge"
-            src="/images/brand/garden-cafe-logo.png"
+            src="/images/brand/garden-cafe-logo.webp"
             alt=""
             width="240"
             height="240"

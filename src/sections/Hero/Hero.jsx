@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button'
 import HeroFoodMoment from '../../components/HeroFoodMoment/HeroFoodMoment'
 import { cafe } from '../../data/cafeData'
 import { hero } from '../../data/homeContent'
+import { useOffscreen } from '../../hooks/useOffscreen'
 import { DURATION, EASE_STANDARD } from '../../utils/motion'
 import './Hero.css'
 
@@ -37,20 +38,33 @@ const fadeUp = (delay) => ({
 // frame is the poster, shown until playback starts and held for reduced motion.
 const HERO_VIDEO_HD = '/images/cafe/garden-hero-1440.mp4'
 const HERO_VIDEO = '/images/cafe/garden-hero.mp4'
-const HERO_POSTER = '/images/cafe/garden-hero.jpg'
+const HERO_POSTER = '/images/cafe/garden-hero.webp'
+
+/**
+ * Data Saver is on, or the browser rates the connection 3G or slower: the
+ * film (6–9 MB) would cost the visitor more than it gives, so the poster —
+ * the film's first frame — stays, as it does under reduced motion. Browsers
+ * without the Network Information API (Safari, Firefox) report nothing and
+ * play the film as before.
+ */
+function isConstrainedConnection() {
+  const connection = typeof navigator === 'undefined' ? null : navigator.connection
+  if (!connection) return false
+  return connection.saveData === true || /^(slow-2g|2g|3g)$/.test(connection.effectiveType ?? '')
+}
 
 /**
  * Whether the film may start loading: once the page itself has loaded, so
  * its megabytes never compete with the scripts, fonts and photographs the
  * first view needs (the poster — the film's first frame — holds until
  * then). Never under reduced motion, which keeps the poster and so needs
- * no film at all.
+ * no film at all — nor on a slow or metered connection (see below).
  */
 function useFilmReady(prefersReducedMotion) {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    if (prefersReducedMotion) return undefined
+    if (prefersReducedMotion || isConstrainedConnection()) return undefined
     let timer = 0
     const start = () => {
       timer = setTimeout(() => setReady(true), 0)
@@ -85,8 +99,21 @@ export default function Hero() {
     video.play()?.catch(() => {})
   }, [filmReady, prefersReducedMotion])
 
+  // Scrolled away: the film rests and the food line's loops pause (CSS,
+  // .hero[data-offscreen]), so neither costs anything while unseen. Both
+  // carry on where they left off on the way back.
+  const sectionRef = useRef(null)
+  useOffscreen(sectionRef, {
+    onChange: (offscreen) => {
+      const video = videoRef.current
+      if (!video || !filmReady || prefersReducedMotion) return
+      if (offscreen) video.pause()
+      else video.play()?.catch(() => {})
+    },
+  })
+
   return (
-    <section className="hero surface-ink" aria-labelledby="hero-title">
+    <section ref={sectionRef} className="hero surface-ink" aria-labelledby="hero-title">
       {/* Decorative: muted, looping, hidden from assistive tech. Reduced
           motion holds the first frame instead of playing. */}
       <div className="hero__media" aria-hidden="true">

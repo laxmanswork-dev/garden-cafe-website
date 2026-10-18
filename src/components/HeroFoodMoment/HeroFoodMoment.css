@@ -113,6 +113,17 @@
   }
 }
 
+/* Out of view (the hero sets data-offscreen, see useOffscreen): every loop
+   in the food line rests until it is scrolled back into sight. */
+[data-offscreen] .garland-track,
+[data-offscreen] .garland__sway,
+[data-offscreen] .garland__gust,
+[data-offscreen] .garland__light,
+[data-offscreen] .garland__ink,
+[data-offscreen] .garland__ink path {
+  animation-play-state: paused;
+}
+
 /* Held still while the visitor points at it or tabs into it. */
 .garland-strip__window:focus-within .garland-track {
   animation-play-state: paused;

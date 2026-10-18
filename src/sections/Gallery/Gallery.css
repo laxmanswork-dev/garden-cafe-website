@@ -87,18 +87,25 @@
 .gallery__track {
   display: flex;
   width: max-content;
-  /* Moves by exactly one set (half the track), then starts again. */
+  /* Moves by exactly one set (half the track), then starts again —
+     left to right: from one set to the left back to rest. */
   animation: gallery-drift var(--drift) linear infinite;
 }
 
 @keyframes gallery-drift {
-  to {
+  from {
     transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
   }
 }
 
-/* Paused by the button, or while a mouse rests over the photographs. */
-.gallery__ribbon[data-paused] .gallery__track {
+/* Paused by the button, while a mouse rests over the photographs, or while
+   the section is out of view (data-offscreen, see useOffscreen). */
+.gallery__ribbon[data-paused] .gallery__track,
+.gallery[data-offscreen] .gallery__track {
   animation-play-state: paused;
 }
 

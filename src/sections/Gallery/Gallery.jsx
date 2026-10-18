@@ -7,6 +7,7 @@ import ScrollReveal from '../../components/ScrollReveal/ScrollReveal'
 import SectionLabel from '../../components/SectionLabel/SectionLabel'
 import { galleryPhotos } from '../../data/galleryPhotos'
 import { gallery } from '../../data/homeContent'
+import { useOffscreen } from '../../hooks/useOffscreen'
 import './Gallery.css'
 import { useGalleryVideos } from './useGalleryVideos'
 
@@ -65,7 +66,7 @@ function Frame({ photo, copy, videoHost }) {
  * 03 — The Gallery · four photographs on one slow ribbon.
  *
  * The label and a single short line, then the four framed photographs
- * (data/galleryPhotos.js) drifting right to left as one continuous strip,
+ * (data/galleryPhotos.js) drifting left to right as one continuous strip,
  * the way prints might pass in a quiet window display. The strip is the set
  * twice over: it moves by exactly one set's width and starts again, so the
  * loop never shows a seam. The second set is hidden from assistive
@@ -87,6 +88,8 @@ export default function Gallery() {
   const prefersReducedMotion = useReducedMotion()
   const sectionRef = useRef(null)
   const ribbonRef = useRef(null)
+  // Out of view, the strip rests (CSS: .gallery[data-offscreen]).
+  useOffscreen(sectionRef)
   const videoHost = useGalleryVideos({
     sectionRef,
     ribbonRef,
