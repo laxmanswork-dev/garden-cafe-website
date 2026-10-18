@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Hero food moment — six photographs as one curated collection, with a
-   small handwritten "Garden" signature above them (gardenSignature.js).
+   Hero food moment — seven photographs as one curated collection, beneath
+   the hero's actions (the signed "Garden" above is the hero's headline).
    The frames hang at slightly different heights and tilts; the composition
    comes from their spacing, drops and tilts.
    At every size: one strip, drifting slowly left to right (see below).
@@ -12,8 +12,7 @@
      .garland__frame               hover lift and squaring-up
    ========================================================================== */
 
-/* The collection and its signature. Full width so the list sizes from the
-   page, as before; the signature is laid over the top of the list. */
+/* The collection. Full width so the strip sizes from the page. */
 .garland-set {
   position: relative;
   display: flex;
@@ -40,8 +39,7 @@
 .garland-strip {
   --gap: var(--space-5);
   /* Every frame keeps the space the composition was built on: a shared top
-     band (--hang-slot) plus its own drop (--drop, set per item). The
-     signature lives in that top band. */
+     band (--hang-slot) plus its own drop (--drop, set per item). */
   --hang-slot: 1.6875rem;
   --frame-width: 7.25rem;
   /* Room above and below the frames inside the window, so their tilt,
@@ -73,7 +71,7 @@
     --gap: 1.75rem;
     --hang-slot: 1.8125rem;
     --frame-width: 7.3571rem;
-    /* Wide enough to be the signature of the hero, still well inside the
+    /* Wide enough to carry the hero's foot, still well inside the
        page so the frames support the headline rather than compete with it
        (the same 66rem the row of seven had). */
     width: min(100%, 66rem);
@@ -82,6 +80,9 @@
 
 .garland-strip__window {
   width: 100%;
+  /* Its padding (room for tilt and shadow) can reach up under the hero's
+     buttons on small screens: only the frames themselves take taps. */
+  pointer-events: none;
   /* Sideways only: clip (not hidden) leaves the vertical axis free. */
   overflow-x: clip;
   padding-block: var(--bleed-top) var(--bleed-bottom);
@@ -118,9 +119,7 @@
 [data-offscreen] .garland-track,
 [data-offscreen] .garland__sway,
 [data-offscreen] .garland__gust,
-[data-offscreen] .garland__light,
-[data-offscreen] .garland__ink,
-[data-offscreen] .garland__ink path {
+[data-offscreen] .garland__light {
   animation-play-state: paused;
 }
 
@@ -152,6 +151,8 @@
   align-items: center;
   width: var(--frame-width);
   padding-block-start: calc(var(--hang-slot) + var(--drop));
+  /* Taps and hover land on the frame, not the window around it. */
+  pointer-events: none;
 }
 
 /* Reduced motion: no travel. One copy of the seven, still — centred where
@@ -184,142 +185,12 @@
 }
 
 /* --------------------------------------------------------------------------
-   The signature — one small signed "Garden", centred above the collection.
-   A quiet mark, not a heading: the G ~49px tall on desktop, the small
-   letters ~12px; warm ivory, a touch translucent, with a tight shadow so the
-   fine pen holds over the leaves.
-   -------------------------------------------------------------------------- */
-
-.garland__signature {
-  --signature-height: 3.96rem;
-
-  position: absolute;
-  top: -1.71rem;
-  left: 50%;
-  width: calc(var(--signature-height) * 72 / 38);
-  height: var(--signature-height);
-  margin-inline-start: calc(var(--signature-height) * -36 / 38);
-  overflow: visible;
-  pointer-events: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  /* A quiet brand detail beneath the action — never louder than the h1. */
-  color: color-mix(in srgb, var(--hero-text) 72%, transparent);
-  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.45)) drop-shadow(0 1px 6px rgb(0 0 0 / 0.3));
-}
-
-@media (min-width: 64em) {
-  .garland__signature {
-    --signature-height: 4.455rem;
-    top: -2.18rem;
-  }
-}
-
-/* Signing, on a loop — one 8s cycle, first run as the entrance (1.05s in,
-   after the headline and action). The pen draws each stroke in the order
-   it is signed: the G (1.1s), "arden" (1.4s), the run-out (0.4s). The word
-   holds ~3.8s, fades out, rests a beat, and is signed again. Strokes are
-   drawn by dash offset (paint only, on three tiny paths — the one
-   exception to transform/opacity motion, as a pen line cannot be drawn
-   any other way). Before the first run the strokes are hidden (backwards
-   fill); reduced motion shows the finished signature, still. */
-.garland__ink path {
-  /* Dash 1, gap 2: a hidden stroke starts past its own end, so the round
-     cap leaves no dot. */
-  stroke-dasharray: 1 2;
-  stroke-dashoffset: 0;
-  animation: 8s linear 1.05s infinite backwards;
-}
-
-.garland__ink path:nth-child(1) {
-  animation-name: signature-g;
-}
-
-.garland__ink path:nth-child(2) {
-  animation-name: signature-arden;
-}
-
-.garland__ink path:nth-child(3) {
-  animation-name: signature-runout;
-}
-
-.garland__ink {
-  animation: signature-fade 8s linear 1.05s infinite;
-}
-
-@keyframes signature-g {
-  0% {
-    stroke-dashoffset: 1.05;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
-  }
-
-  14%,
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes signature-arden {
-  0%,
-  14% {
-    stroke-dashoffset: 1.05;
-    animation-timing-function: cubic-bezier(0.35, 0, 0.65, 1);
-  }
-
-  31.5%,
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes signature-runout {
-  0%,
-  31.5% {
-    stroke-dashoffset: 1.05;
-    animation-timing-function: cubic-bezier(0.2, 0, 0.4, 1);
-  }
-
-  36.5%,
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes signature-fade {
-  0%,
-  84% {
-    opacity: 1;
-  }
-
-  92%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .garland__ink,
-  .garland__ink path {
-    animation: none;
-  }
-}
-
-/* Phones frame the brightest sky here — a slightly firmer shadow. */
-@media (max-width: 47.99em) {
-  .garland__signature {
-    color: color-mix(in srgb, var(--hero-text) 82%, transparent);
-    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.5)) drop-shadow(0 1px 6px rgb(0 0 0 / 0.34));
-  }
-}
-
-/* --------------------------------------------------------------------------
    Hanger — the photograph, pivoting from the centre of its top edge.
    -------------------------------------------------------------------------- */
 
 .garland__hang {
   width: 100%;
+  pointer-events: auto;
   transform: rotate(var(--tilt));
   transform-origin: top center;
 }

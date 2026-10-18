@@ -3,27 +3,20 @@ import { Link } from 'react-router-dom'
 import ImagePlaceholder from '../ImagePlaceholder/ImagePlaceholder'
 import { menuCategories } from '../../data/menuCategories'
 import { EASE_STANDARD } from '../../utils/motion'
-import { signature } from './gardenSignature'
 import './HeroFoodMoment.css'
 
 /*
  * The hero's food moment — seven photographs as one curated collection.
  *
- * A single small signed "Garden" (see gardenSignature.js) sits above
- * the collection as a quiet signature; the seven framed photographs hang
- * beneath it at slightly different heights and tilts, like prints pinned up
- * by hand. At every size they form one horizontal strip that drifts slowly
+ * The seven framed photographs hang beneath the hero's actions (the signed
+ * "Garden" is now the hero's headline, see GardenSignature), each with its
+ * own small tilt, like prints pinned up by hand. At every size they form one horizontal strip that drifts slowly
  * left to right, without end (see COPIES below); pointing at it or tabbing
  * into it holds it still. Desktop shows all seven at once, phones two and a
  * part of the next.
  *
- * The signature signs itself, on a loop: the pen draws the G in one
- * gesture, then "arden", then the short run-out; the word holds, fades, and
- * is signed again (see .garland__signature in the CSS). The first signing
- * is its entrance.
- *
- * Motion, once on load: the signature settles with a 3px rise as it is
- * first signed, then the photographs settle into place with a small stagger. Then each photograph
+ * Motion, once on load: the photographs settle into place with a small
+ * stagger. Then each photograph
  * keeps a slow, gentle sway — under a degree, on its own timing, so the six
  * never move together.
  *
@@ -70,38 +63,11 @@ const SWAY_STEP = 0.45
 const GUST_START = 5
 const GUST_STEP = 0.18
 
-// Entrance timeline (s): after the headline (≈0.25 → 0.9s) and action.
-const T = { signature: 1.05, photos: 1.55 }
+// Entrance timeline (s): after the signature (≈0.2 → 0.9s) and action.
+const T = { photos: 1.55 }
 const STEP = 0.06
 
 const settle = (delay, duration = 1.1) => ({ duration, ease: EASE_STANDARD, delay })
-
-// A fine pen, in viewBox units: the signature draws at ~1.67 (phones) to
-// ~1.88 (desktop) screen px per unit, so 1 / 1.75 keeps the stroke widths
-// at ~1px, as before. (Not non-scaling-stroke: that measures dashes in
-// screen px, which breaks drawing each stroke by its pathLength.)
-const PEN = 1 / 1.75
-
-function Signature({ from }) {
-  return (
-    <m.svg
-      className="garland__signature"
-      viewBox={signature.viewBox}
-      aria-hidden="true"
-      focusable="false"
-      initial={from({ y: 3 })}
-      animate={{ y: 0 }}
-      transition={settle(T.signature, 1)}
-    >
-      <g className="garland__ink" transform={signature.slant}>
-        {/* pathLength 1: each stroke is drawn by its dash offset, 1 → 0. */}
-        {signature.strokes.map(([d, width]) => (
-          <path key={d} d={d} pathLength={1} strokeWidth={width * PEN} />
-        ))}
-      </g>
-    </m.svg>
-  )
-}
 
 function Photo({ category }) {
   return (
@@ -134,8 +100,10 @@ function Photo({ category }) {
  * Three copies, not two: one list (~1020px) is a touch narrower than the
  * desktop window (66rem), so two would open a gap just before the reset.
  * The copies reuse the same image files, so nothing extra downloads; they
- * are hidden from assistive tech and inert, so keyboard and screen-reader
- * users meet each photograph once.
+ * are hidden from assistive tech and their links are out of the tab order,
+ * so keyboard and screen-reader users meet each photograph once. Not
+ * `inert`: most of the time the frames on screen are copies, and they must
+ * still answer a click or tap like the originals.
  */
 const COPIES = 3
 
@@ -148,7 +116,6 @@ function Frames({ copy, from }) {
       role="list"
       aria-label={isCopy ? undefined : 'What we serve'}
       aria-hidden={isCopy || undefined}
-      inert={isCopy || undefined}
     >
       {menuCategories.map((category, index) => {
         const hang = HANG[index]
@@ -180,6 +147,7 @@ function Frames({ copy, from }) {
                 className="garland__sway"
                 to={`/?category=${category.id}#food-drinks`}
                 aria-label={`${category.name} — see it on the menu`}
+                tabIndex={isCopy ? -1 : undefined}
               >
                 <div className="garland__gust">
                   <figure className="garland__frame">
@@ -203,8 +171,6 @@ export default function HeroFoodMoment() {
 
   return (
     <div className="garland-set">
-      <Signature from={from} />
-
       {/* Hover and keyboard focus hold the strip still (CSS), so a moving
           photograph is never a moving target. */}
       <div className="garland-strip">

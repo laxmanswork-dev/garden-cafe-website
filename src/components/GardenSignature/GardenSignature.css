@@ -1,0 +1,13 @@
+/* The signed "Garden": pen strokes in the current colour. Set its height;
+   the width follows the drawing (72 × 38). */
+.garden-signature {
+  display: block;
+  height: 1em;
+  width: auto;
+  aspect-ratio: 72 / 38;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

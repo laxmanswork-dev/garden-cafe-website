@@ -78,8 +78,8 @@
 }
 
 /* A soft floor to the film: black at 55% along the bottom edge, fading to
-   nothing 45% of the way up, so the photographs and the "Garden" signature
-   stand crisp over the bright paving. Part of the media layer, so it sits
+   nothing 45% of the way up, so the photographs stand crisp over the
+   bright paving. Part of the media layer, so it sits
    behind all hero content. */
 .hero__media::before {
   content: '';
@@ -103,30 +103,32 @@
   text-align: center;
 }
 
-/* The headline — the primary focus. Upright Cormorant, regular weight. */
+/* The h1 — now the signed "Garden", the hero's statement (its text,
+   "Garden Cafe", is visually hidden). It keeps the headline's box, so the
+   glass and the local contrast dip below still anchor to it. */
 .hero__headline {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   /* Never wider than the page's content column. */
   max-width: 100%;
-  font-family: var(--font-display);
-  /* 38 → 66px: the hero's first read. The longer first line holds a
-     deliberate central width (~800px at 1440) rather than spanning the
-     page. On phones it stays strong and the long line wraps, balanced. */
-  font-size: clamp(2.375rem, 1.7535rem + 2.6516vw, 4.125rem);
-  /* One step firmer than regular, so Cormorant's hairlines hold over
-     bright sky and sunlit leaves. */
-  font-weight: var(--weight-medium);
-  /* Set tighter as it grows: two lines that read as one statement. */
-  line-height: 1.06;
-  letter-spacing: -0.018em;
+  margin: 0;
   /* Warm ivory, set straight on the film. */
   color: var(--hero-text);
-  /* A tight shadow edges the strokes; a soft one lifts the words off the
-     film. Neither reads as an effect. */
-  text-shadow:
-    0 1px 2px rgb(0 0 0 / 0.24),
-    0 2px 18px rgb(0 0 0 / 0.34);
+}
+
+/* The signature's size: its height, 128 → 256px, growing with the screen
+   (the width follows, about 1.9×: ~245px on phones, ~455px at 1440 — wider
+   than the old two-line headline, so it leads), and capped on very wide
+   screens so it never outgrows the centre column. */
+.hero__signature {
+  display: block;
+  /* …and never more than a third of the screen's height, so on short
+     screens (phones held sideways) the actions stay in the first view. */
+  font-size: min(clamp(8rem, 5.4rem + 10.67vw, 16rem), 32svh);
+  line-height: 1;
+  /* Two shadows hold the fine pen lines over bright leaves and sky, frame
+     to frame: a tight edge, and a soft lift. Neither reads as an effect. */
+  filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.45)) drop-shadow(0 2px 14px rgb(0 0 0 / 0.38));
 }
 
 /* Local contrast: a soft dark dip centred between the headline and the
@@ -264,21 +266,6 @@
   text-shadow: 0 1px 10px rgb(0 0 0 / 0.4);
 }
 
-/* Each approved line rises from behind its own mask. Flex column keeps the
-   masks' negative margins from collapsing into extra leading. */
-.hero__line {
-  display: block;
-  overflow: clip;
-  padding-block: 0.1em;
-  margin-block: -0.1em;
-}
-
-.hero__line-inner {
-  display: block;
-  /* When a line wraps on phones, split it evenly rather than orphaning. */
-  text-wrap: balance;
-}
-
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -302,11 +289,14 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  /* Breathing room between the action and the photographs: 80 → 120px,
-     so the "Garden" signature is never crowded by the buttons.
-     It is real layout space, so on short screens the hero grows and the
-     frames run on toward the next chapter rather than being clipped. */
-  margin-block-start: clamp(5rem, 4.1197rem + 3.7559vw, 7.5rem);
+  /* Breathing room between the action and the photographs: 40 → 72px of
+     layout (the frames hang a further ~60–75px inside the strip, and the
+     action is nudged down by the group offset, so the eye reads ~60–80px).
+     Less than when the small signature sat here; the large one above now
+     carries the hero. It is real layout space, so on short screens the
+     hero grows and the frames run on toward the next chapter rather than
+     being clipped. */
+  margin-block-start: clamp(2.5rem, 1.8rem + 2.6vw, 4.5rem);
 }
 
 /* Invisible glass behind the moving photographs and their marks — only
@@ -317,8 +307,8 @@
 
 /* Short laptop screens (under 640px tall — e.g. 1366 × 768 at 125% zoom):
    a little less air above the photographs, so the whole row stays on
-   screen, and the headline group drops its downward nudge so the action
-   stays clear of the "Garden" signature. */
+   screen, and the signature group drops its downward nudge so the action
+   stays clear of the photographs. */
 @media (min-width: 64em) and (max-height: 40em) {
   .hero {
     --hero-group-offset: 0rem;
@@ -327,6 +317,6 @@
   }
 
   .hero__food {
-    margin-block-start: 3.5rem;
+    margin-block-start: 2rem;
   }
 }

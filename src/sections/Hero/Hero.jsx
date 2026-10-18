@@ -1,7 +1,8 @@
 import { m, useReducedMotion } from 'framer-motion'
 import { ArrowRight, Play } from 'lucide-react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Button from '../../components/Button/Button'
+import GardenSignature from '../../components/GardenSignature/GardenSignature'
 import HeroFoodMoment from '../../components/HeroFoodMoment/HeroFoodMoment'
 import { cafe } from '../../data/cafeData'
 import { hero } from '../../data/homeContent'
@@ -12,13 +13,12 @@ import './Hero.css'
 /*
  * 01 — Hero · LIGHT / CENTRED
  *
- * Confidence through restraint: headline, one action — centred on warm
- * paper — then the G-A-R-D-E-N food line beneath the action: six real
- * photographs hanging from the letters of the word. The brand lives in the
- * navbar.
+ * Confidence through restraint: a small descriptor, the large signed
+ * "Garden" as the statement, the two actions — then the moving line of food
+ * photographs beneath. The navbar keeps the badge and wordmark.
  *
- * Entrance (once, on load): the headline rises line by line from behind
- * masks; the action fades up; then the garden line draws itself in.
+ * Entrance (once, on load): the signature fades in; the action fades up;
+ * then the food line settles into place.
  * Reduced motion: transforms resolve instantly, only short fades remain.
  */
 
@@ -141,24 +141,20 @@ export default function Hero() {
           {hero.eyebrow}
         </m.p>
 
-        {/* The page's h1. Masked rise, not an opacity fade: the text is painted
-            from the first frame, so it never holds back Largest Contentful Paint. */}
+        {/* The page's h1: the signed "Garden" as the hero's statement. Screen
+            readers and search engines read "Garden Cafe"; the signature is
+            drawn complete and only fades in, briefly — it is in the page from
+            the first render, so nothing waits on the animation. */}
         <h1 id="hero-title" className="hero__headline">
-          {hero.headline.map((line, index) => (
-            <Fragment key={line}>
-              {index > 0 && ' '}
-              <span className="hero__line">
-                <m.span
-                  className="hero__line-inner"
-                  initial={{ y: '105%' }}
-                  animate={{ y: '0%' }}
-                  transition={settle(0.25 + index * 0.09, DURATION.slow * 1.1)}
-                >
-                  {line}
-                </m.span>
-              </span>
-            </Fragment>
-          ))}
+          <span className="visually-hidden">{cafe.name}</span>
+          <m.span
+            className="hero__signature"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={settle(0.2, DURATION.slow)}
+          >
+            <GardenSignature />
+          </m.span>
         </h1>
 
         <m.div className="hero__actions" {...fadeUp(0.55)}>
