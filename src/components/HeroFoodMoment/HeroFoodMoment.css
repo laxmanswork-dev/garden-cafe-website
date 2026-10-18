@@ -19,6 +19,12 @@
   justify-content: center;
   width: 100%;
   min-width: 0;
+  /* The strip sits close under the hero's buttons, which are nudged down
+     over its top edge, and its window's padding (room for tilt and shadow)
+     reaches up further still. None of that takes taps: only the frames
+     themselves do (.garland__hang sets them back; pointer-events is
+     inherited by everything in between). */
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -80,9 +86,6 @@
 
 .garland-strip__window {
   width: 100%;
-  /* Its padding (room for tilt and shadow) can reach up under the hero's
-     buttons on small screens: only the frames themselves take taps. */
-  pointer-events: none;
   /* Sideways only: clip (not hidden) leaves the vertical axis free. */
   overflow-x: clip;
   padding-block: var(--bleed-top) var(--bleed-bottom);
@@ -151,8 +154,6 @@
   align-items: center;
   width: var(--frame-width);
   padding-block-start: calc(var(--hang-slot) + var(--drop));
-  /* Taps and hover land on the frame, not the window around it. */
-  pointer-events: none;
 }
 
 /* Reduced motion: no travel. One copy of the seven, still — centred where

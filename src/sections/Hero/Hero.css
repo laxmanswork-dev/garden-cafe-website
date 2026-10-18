@@ -24,6 +24,9 @@
   /* Space between the headline and the action: 40 → 56px. */
   --hero-action-gap: clamp(2.5rem, 2.1479rem + 1.5023vw, 3.5rem);
 
+  /* The two hero buttons: 47px tall, a step above the 44px tap minimum. */
+  --hero-button-height: 2.9375rem;
+
   /* Invisible glass behind the photographs. A whisper of light, every side
      fading to nothing: felt, not seen. (Not behind the text: a white tint
      there lifts the film behind ivory type — see the backing below.) */
@@ -133,7 +136,7 @@
 }
 
 /* The supporting line — the original words, secondary to the signature
-   but plainly readable: Inter at 15 → 19px (~18px at 1440) in warm ivory,
+   but plainly readable: Inter at 17 → 20px (20px from 1440) in warm ivory,
    set just under the signature so the two read as one mark. One line
    where it fits; on narrow phones it wraps in two even halves. A tight
    shadow edges the letters and a soft one lifts them, so the line holds
@@ -142,7 +145,7 @@
   max-width: 100%;
   margin-block-start: clamp(0.5rem, 0.41rem + 0.38vw, 0.75rem);
   font-family: var(--font-body);
-  font-size: clamp(0.9375rem, 0.88rem + 0.256vw, 1.1875rem);
+  font-size: clamp(1.0625rem, 1rem + 0.278vw, 1.25rem);
   font-weight: var(--weight-regular);
   line-height: 1.45;
   letter-spacing: 0.005em;
@@ -168,7 +171,7 @@
   position: absolute;
   /* From above the label to below the buttons; wide enough that the
      supporting line sits well inside it. */
-  inset: -5rem -9rem calc(-1 * (var(--hero-action-gap) + var(--tap-target) + 6rem));
+  inset: -5rem -9rem calc(-1 * (var(--hero-action-gap) + var(--hero-button-height) + 6rem));
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(
@@ -183,11 +186,11 @@
 /* Our story — the secondary action: an outline button. A near-solid
    ivory hairline and ivory type over a soft dark fill that lightly blurs
    the leaves behind it, so it holds on bright foliage; fills to ivory with
-   ink type on hover. Same compact 44px size as View menu, which stays the
+   ink type on hover. The same 47px size as View menu, which stays the
    stronger of the two. */
 .hero .hero__actions .button--secondary {
-  --button-height: var(--tap-target);
-  --button-padding-x: 1.125rem;
+  --button-height: var(--hero-button-height);
+  --button-padding-x: 1.25rem;
   --button-bg: rgb(20 20 18 / 0.3);
   --button-fg: var(--hero-text);
   --button-border: rgb(241 235 221 / 0.95);
@@ -195,7 +198,7 @@
   --button-fg-hover: var(--color-ink);
   --button-border-hover: var(--hero-text);
   gap: var(--space-2);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.3);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
@@ -211,15 +214,15 @@
    navbar's Reserve, the same compact size as Explore. (The hero is
    a dark surface, which would otherwise invert a primary button to paper.) */
 .hero .hero__actions .hero__menu-link {
-  --button-height: var(--tap-target);
-  --button-padding-x: 1.125rem;
+  --button-height: var(--hero-button-height);
+  --button-padding-x: 1.25rem;
   --button-bg: var(--color-ink);
   --button-fg: var(--color-text-light);
   --button-border: var(--color-ink);
   --button-bg-hover: var(--color-moss-dark);
   --button-fg-hover: var(--color-text-light);
   --button-border-hover: var(--color-moss-dark);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   box-shadow:
     0 1px 2px rgb(0 0 0 / 0.14),
     0 4px 14px -6px rgb(0 0 0 / 0.32);
@@ -299,7 +302,7 @@
 /* Small phones: a touch less side padding keeps the pair on one row. */
 @media (max-width: 26.24em) {
   .hero .hero__actions .button {
-    --button-padding-x: 0.875rem;
+    --button-padding-x: 0.9375rem;
   }
 }
 
@@ -307,14 +310,16 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  /* Breathing room between the action and the photographs: 40 → 72px of
-     layout (the frames hang a further ~60–75px inside the strip, and the
-     action is nudged down by the group offset, so the eye reads ~60–80px).
-     Less than when the small signature sat here; the large one above now
-     carries the hero. It is real layout space, so on short screens the
-     hero grows and the frames run on toward the next chapter rather than
-     being clipped. */
-  margin-block-start: clamp(2.5rem, 1.8rem + 2.6vw, 4.5rem);
+  /* Breathing room between the action and the photographs: 20 → 52px of
+     layout. The frames hang a further ~60–75px inside the strip and the
+     action is nudged down by the group offset, so the eye reads ~42px on
+     phones to ~50–57px on desktop between the buttons and the frames:
+     close enough that signature, line, buttons and strip read as one
+     sequence, still a deliberate pause. (The strip's padding may reach up
+     under the buttons; it never takes their taps — HeroFoodMoment.css.)
+     It is real layout space, so on short screens the hero grows and the
+     frames run on toward the next chapter rather than being clipped. */
+  margin-block-start: clamp(1.25rem, 0.75rem + 2vw, 3.25rem);
 }
 
 /* Invisible glass behind the moving photographs and their marks — only
@@ -335,6 +340,6 @@
   }
 
   .hero__food {
-    margin-block-start: 2rem;
+    margin-block-start: 1rem;
   }
 }
