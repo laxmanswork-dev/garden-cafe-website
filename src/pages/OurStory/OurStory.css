@@ -4,7 +4,7 @@
    narrative beside the owners' photograph (an empty 4:5 placeholder until it
    is supplied), and a quiet close. No cafe photographs.
 
-   Phones: one column — opening, story, photograph, close.
+   Phones: one column — opening, photograph, story, close.
    Tablets (≥ 768px): story and photograph side by side.
    ========================================================================== */
 
@@ -81,6 +81,16 @@
 .story-body__photo .responsive-image img {
   outline: 1px solid rgb(32 33 30 / 0.18);
   outline-offset: -1px;
+}
+
+/* Phones (one column): the owners' photograph comes first, straight under
+   the heading, and the story follows it. Order only — the text stays first
+   in the page itself, so screen readers still read the story before the
+   photograph; tablets and desktop keep text left, photograph right. */
+@media (max-width: 47.99em) {
+  .story-body__photo {
+    order: -1;
+  }
 }
 
 /* Reserved for the owners' photograph: same 4:5 box as the photo will use. */
