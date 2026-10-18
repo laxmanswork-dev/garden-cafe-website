@@ -21,9 +21,14 @@ export const story = {
 }
 
 /**
- * The owners' photograph. Not supplied yet: while null, the page shows an
- * empty 4:5 placeholder in its place. When it arrives, set e.g.
- * { src: '/images/story/owners-900.webp', width: 900, height: 1125, alt: '…' }
- * (any size; it is cropped to 4:5). Never a stand-in photograph.
+ * The owners' photograph, cropped to 4:5 from _source-assets/public/images/
+ * story/owner.png. Set to null to show the empty placeholder instead.
+ * Never a stand-in photograph.
  */
-export const ownerPhoto = null
+export const ownerPhoto = {
+  src: '/images/story/owners-868.webp',
+  srcSet: '/images/story/owners-480.webp 480w, /images/story/owners-868.webp 868w',
+  width: 868,
+  height: 1085,
+  alt: 'The two owners of Garden Cafe standing together at the cafe',
+}

@@ -58,6 +58,31 @@
   max-width: 26rem;
 }
 
+/* The owners' photograph in the same frame as The Cafe's photographs
+   (ThePlace.css), drawn here in CSS: a deep warm-stone moulding (lighter
+   at the top), a faint lip of light just inside its outer edge, an ivory
+   mount with a dark hairline where it meets the moulding, and a fine line
+   where the photograph meets the mount. Same close, understated shadow. */
+.story-body__photo .responsive-image {
+  border: clamp(5px, 1.4vw, 7px) solid transparent;
+  padding: clamp(12px, 3vw, 16px);
+  background:
+    linear-gradient(#fbf9f3, #fbf9f3) padding-box,
+    linear-gradient(#544f46, #413d36) border-box;
+  outline: 1px solid rgb(255 250 240 / 0.12);
+  outline-offset: -2px;
+  box-shadow:
+    inset 0 0 0 1px rgb(20 21 19 / 0.45),
+    0 0 0 1px #36332d,
+    0 1px 1.5px rgb(32 33 30 / 0.16),
+    0 5px 12px rgb(32 33 30 / 0.07);
+}
+
+.story-body__photo .responsive-image img {
+  outline: 1px solid rgb(32 33 30 / 0.18);
+  outline-offset: -1px;
+}
+
 /* Reserved for the owners' photograph: same 4:5 box as the photo will use. */
 .story-body__placeholder {
   aspect-ratio: 4 / 5;
@@ -102,7 +127,11 @@
   }
 
   .story-body__photo {
-    max-width: 30rem;
+    /* Wider than its column by 1.5rem on each side (into the gap on the
+       left, the inset on the right); the height cap below is unchanged. */
+    width: calc(100% + 3rem);
+    max-width: 33rem;
+    margin-inline: -1.5rem;
     justify-self: end;
   }
 

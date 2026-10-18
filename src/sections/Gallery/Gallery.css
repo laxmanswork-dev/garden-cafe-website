@@ -1,0 +1,259 @@
+/* ==========================================================================
+   03 — The Gallery · four framed photographs on one slow ribbon.
+
+   The heading stays compact: the label and one short line, with the Pause
+   control on the right. Beneath it the ribbon runs the full width of the
+   page, its two ends fading into the paper, and drifts right to left.
+
+   Each frame is the same as 02 — The Cafe's: a square-cornered stone
+   moulding and an ivory mount, the photograph in a fine-cut window, its
+   caption on the mount below.
+
+   --item is one frame plus the gap after it, so the ribbon's rhythm stays
+   exact: phones ~2 frames in view, tablets and up just under four. One
+   set of four (4 × 26vw) is always wider than the screen, so the loop
+   never shows its end. --drift: twice the original pace (user, 2026-10-17).
+   ========================================================================== */
+
+.gallery {
+  --item: 46vw;
+  --gap: var(--space-4);
+  --drift: 8.5s;
+  --chapter-min-height: auto;
+  gap: clamp(1.5rem, 1.1479rem + 1.5023vw, 2.5rem);
+}
+
+@media (min-width: 48em) {
+  .gallery {
+    --item: 26vw;
+    --gap: var(--space-5);
+    --drift: 10.5s;
+  }
+}
+
+@media (min-width: 64em) {
+  .gallery {
+    --drift: 12.5s;
+  }
+}
+
+@media (min-width: 80em) {
+  .gallery {
+    --gap: 1.75rem;
+    --drift: 20s;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Heading
+   -------------------------------------------------------------------------- */
+
+.gallery__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+}
+
+.gallery__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gallery__headline {
+  max-width: 24em;
+}
+
+/* --------------------------------------------------------------------------
+   The ribbon
+   -------------------------------------------------------------------------- */
+
+.gallery__ribbon {
+  overflow: hidden;
+  /* Room for the frames' shadows inside the clip. */
+  padding-block: var(--space-2) var(--space-5);
+  /* The two ends fade into the paper rather than cut off. */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade, 5%),
+    #000 calc(100% - var(--fade, 5%)),
+    transparent
+  );
+}
+
+.gallery__track {
+  display: flex;
+  width: max-content;
+  /* Moves by exactly one set (half the track), then starts again. */
+  animation: gallery-drift var(--drift) linear infinite;
+}
+
+@keyframes gallery-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Paused by the button, or while a mouse rests over the photographs. */
+.gallery__ribbon[data-paused] .gallery__track {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery__ribbon:hover .gallery__track {
+    animation-play-state: paused;
+  }
+}
+
+.gallery__set {
+  display: flex;
+  flex: none;
+}
+
+.gallery__item {
+  flex: none;
+  width: var(--item);
+  padding-inline-end: var(--gap);
+}
+
+/* --------------------------------------------------------------------------
+   The frame — stone moulding, ivory mount, photograph, caption.
+   -------------------------------------------------------------------------- */
+
+.gallery__frame {
+  container-type: inline-size;
+  margin: 0;
+  padding: 5px;
+  background: linear-gradient(#47433c, #36332d);
+  box-shadow:
+    0 1px 1.5px rgb(32 33 30 / 0.16),
+    0 5px 12px rgb(32 33 30 / 0.07);
+}
+
+.gallery__frame > * {
+  background-color: #fbf9f3;
+}
+
+.gallery__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  /* The mount around the window: sides and top; the caption is its foot. */
+  border: solid #fbf9f3;
+  border-width: clamp(0.5rem, 6cqi, 0.875rem) clamp(0.5rem, 6cqi, 0.875rem) 0;
+  /* The window's cut edge: a hairline where the photograph meets the mount. */
+  box-shadow: inset 0 0 0 1px rgb(32 33 30 / 0.18);
+}
+
+.gallery__photo img,
+.gallery__photo .image-placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.gallery__photo img,
+.gallery__video video {
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+  /* The same gentle grade as The Cafe's photographs. */
+  filter: saturate(0.9) contrast(1.03) sepia(0.05);
+}
+
+/* A video lies exactly over its poster, inside the window, so it can
+   arrive (or move to the other copy of its frame) without shifting
+   anything. */
+.gallery__video {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gallery__video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* A photograph still to come: plain warm stone, quietly marked. */
+.gallery__photo .image-placeholder {
+  background-color: var(--color-stone);
+  outline-color: rgb(32 33 30 / 0.08);
+}
+
+.gallery__photo .image-placeholder__label {
+  font-size: 0.625rem;
+  white-space: nowrap;
+  color: rgb(32 33 30 / 0.45);
+}
+
+/* The caption: small tracked capitals in ink on the mount's foot. Room for
+   two lines on every frame, so all six stay the same height. */
+.gallery__label {
+  display: grid;
+  place-items: center;
+  min-height: calc(2 * 1.3em + 1.25rem);
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.625rem, 0.5986rem + 0.1127vw, 0.6875rem);
+  font-weight: var(--weight-medium);
+  line-height: 1.3;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: rgb(32 33 30 / 0.8);
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion: no movement. The four sit still in a row, inside the page
+   margins, which scrolls sideways where it is wider than the screen.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery__ribbon {
+    overflow-x: auto;
+    padding-inline: var(--page-padding);
+    scroll-padding-inline: var(--page-padding);
+    scroll-snap-type: x mandatory;
+    mask-image: none;
+  }
+
+  .gallery__track {
+    animation: none;
+  }
+
+  .gallery__set--copy {
+    display: none;
+  }
+
+  .gallery__item {
+    scroll-snap-align: start;
+  }
+}
+
+/* Wide screens: all four, side by side within the page margins. */
+@media (prefers-reduced-motion: reduce) and (min-width: 80em) {
+  .gallery__track,
+  .gallery__set {
+    width: 100%;
+  }
+
+  .gallery__set:not(.gallery__set--copy) {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+
+  .gallery__item {
+    width: auto;
+    padding-inline-end: 0;
+  }
+}
+
+.gallery__ribbon:focus-visible {
+  outline-offset: -2px;
+}

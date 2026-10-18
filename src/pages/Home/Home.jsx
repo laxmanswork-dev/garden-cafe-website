@@ -2,6 +2,7 @@ import PageTransition from '../../components/PageTransition/PageTransition'
 import Seo from '../../components/Seo/Seo'
 import Hero from '../../sections/Hero/Hero'
 import ThePlace from '../../sections/ThePlace/ThePlace'
+import Gallery from '../../sections/Gallery/Gallery'
 import FoodDrinks from '../../sections/FoodDrinks/FoodDrinks'
 import Visit from '../../sections/Visit/Visit'
 
@@ -15,6 +16,7 @@ export default function Home() {
       <Seo />
       <Hero />
       <ThePlace />
+      <Gallery />
       <FoodDrinks />
       <Visit />
     </PageTransition>

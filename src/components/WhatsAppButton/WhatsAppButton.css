@@ -10,7 +10,10 @@
 
   position: fixed;
   right: max(var(--whatsapp-gap), env(safe-area-inset-right));
-  bottom: calc(max(var(--whatsapp-gap), env(safe-area-inset-bottom)) + var(--whatsapp-lift));
+  bottom: max(var(--whatsapp-gap), env(safe-area-inset-bottom));
+  /* The lift moves it on the compositor (`translate`, separate from the
+     hover `transform`), so following the footer causes no layout shift. */
+  translate: 0 calc(var(--whatsapp-lift) * -1);
   z-index: calc(var(--z-menu) - 1);
   display: grid;
   place-items: center;

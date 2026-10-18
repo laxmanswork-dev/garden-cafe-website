@@ -31,9 +31,16 @@ export const place = {
   ],
 }
 
+export const gallery = {
+  id: 'gallery',
+  index: 3,
+  label: 'The Gallery',
+  headline: 'A little more of the place we call ours.',
+}
+
 export const food = {
   id: 'food-drinks',
-  index: 3,
+  index: 4,
   label: 'Food & Drinks',
   // One line, left to wrap (balanced).
   headline: ['South Indian favourites, snacks and refreshing drinks.'],
@@ -80,7 +87,7 @@ export const moments = {
 
 export const visit = {
   id: 'visit',
-  index: 4,
+  index: 5,
   label: 'Visit Us',
   headline: ['A table outdoors,', 'a slower kind of day.'],
   groups: {
