@@ -33,7 +33,7 @@
 
 /* The glass layer itself; each area sets only its own extent (inset). */
 .hero__headline::after,
-.hero .garland::before {
+.hero .garland-strip::before {
   content: '';
   position: absolute;
   z-index: -1;
@@ -97,6 +97,9 @@
   /* Full width so the food photographs size from the page,
      not from their own content (children stay centred). */
   width: 100%;
+  /* A grid item: without this the moving strip's long track would
+     widen the whole column past the screen. */
+  min-width: 0;
   text-align: center;
 }
 
@@ -306,14 +309,11 @@
   margin-block-start: clamp(5rem, 4.1197rem + 3.7559vw, 7.5rem);
 }
 
-/* Invisible glass behind the six photographs and their marks — only that
-   area (layer defined with the headline's, above). */
-.hero .garland {
-  position: relative;
-}
-
-.hero .garland::before {
-  inset: -2.5rem -1.5rem -2.75rem;
+/* Invisible glass behind the moving photographs and their marks — only
+   that area (layer defined with the headline's, above). The strip already
+   holds the pause button, so the glass reaches a little less below it. */
+.hero .garland-strip::before {
+  inset: -2.5rem -1.5rem -0.5rem;
 }
 
 /* Short laptop screens (under 640px tall — e.g. 1366 × 768 at 125% zoom):

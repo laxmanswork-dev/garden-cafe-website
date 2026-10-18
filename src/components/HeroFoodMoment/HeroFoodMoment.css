@@ -3,7 +3,7 @@
    small handwritten "Garden" signature above them (gardenSignature.js).
    The frames hang at slightly different heights and tilts; the composition
    comes from their spacing, drops and tilts.
-   Desktop: one row of six. 600px up: two rows of three. Phones: rows of two.
+   At every size: one strip, drifting slowly left to right (see below).
 
    Layers per frame, so no transform fights another:
      .garland__hang                entrance + resting tilt (Framer Motion)
@@ -19,71 +19,204 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  min-width: 0;
 }
 
-.garland {
+/* --------------------------------------------------------------------------
+   The moving strip — the frames travel left to right, slowly and without
+   pause, like prints on a line drawn past a window.
+
+   .garland-strip           the strip's place in the hero (its width)
+   .garland-strip__window   the opening the frames pass through: clips them
+                            sideways and fades them in and out at its edges
+   .garland-track           every copy of the list, side by side — the one
+                            thing that moves (transform only, on the GPU)
+   .garland                 one copy of the seven frames
+
+   The frames keep the width they had in the old grid (≈7.3rem at every
+   size), so phones show two and a part of the next, desktop all seven.
+   -------------------------------------------------------------------------- */
+
+.garland-strip {
   --gap: var(--space-5);
-  --edge: 1.5rem; /* side inset, so the outer frames never meet the page edge */
   /* Every frame keeps the space the composition was built on: a shared top
      band (--hang-slot) plus its own drop (--drop, set per item). The
      signature lives in that top band. */
   --hang-slot: 1.6875rem;
+  --frame-width: 7.25rem;
+  /* Room above and below the frames inside the window, so their tilt,
+     sway, hover lift and deep shadow are never cut by its edge. */
+  --bleed-top: 1rem;
+  --bleed-bottom: 2.75rem;
+  /* Calm: one full set of seven (~1020px) every 42s — about 24px a second,
+     each frame in view for well over ten seconds. */
+  --strip-cycle: 42s;
 
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: var(--gap);
-  /* Rows sit close: each frame already hangs its own drop below the row
-     line, so that alone spaces one row from the next. */
-  row-gap: 0;
-  align-items: start;
-  width: min(100%, 19rem);
-  padding-inline: var(--edge);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  /* A flex item: without this it would grow to the whole track. */
+  min-width: 0;
 }
 
 @media (min-width: 37.5em) {
-  .garland {
+  .garland-strip {
     --gap: var(--space-4);
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: min(100%, 27rem);
+    --frame-width: 7.3333rem;
   }
 }
 
 @media (min-width: 64em) {
-  .garland {
+  .garland-strip {
     --gap: 1.75rem;
-    --edge: 2rem;
     --hang-slot: 1.8125rem;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    --frame-width: 7.3571rem;
     /* Wide enough to be the signature of the hero, still well inside the
-       page so the frames support the headline rather than compete with it.
-       Sized so each of the seven frames keeps the width it had in the row
-       of six (57rem). */
+       page so the frames support the headline rather than compete with it
+       (the same 66rem the row of seven had). */
     width: min(100%, 66rem);
   }
 }
 
-/* The seventh photograph, on its own line below the desktop row: centred
-   under the others, the same width as one of them. */
-@media (max-width: 37.49em) {
-  .garland__item:nth-child(7) {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: calc((100% - var(--gap)) / 2);
+.garland-strip__window {
+  width: 100%;
+  /* Sideways only: clip (not hidden) leaves the vertical axis free. */
+  overflow-x: clip;
+  padding-block: var(--bleed-top) var(--bleed-bottom);
+  margin-block: calc(-1 * var(--bleed-top)) calc(-1 * var(--bleed-bottom));
+  /* The frames arrive and leave through soft edges, never a hard cut. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.garland-track {
+  display: flex;
+  width: max-content;
+  animation: garland-travel var(--strip-cycle) linear infinite;
+  will-change: transform;
+}
+
+/* One copy's width, measured by the track itself: its own width divided
+   by the number of copies. Each copy ends with one gap (see .garland), so
+   the copies are exactly equal and the restart lands on an identical
+   picture. Left to right: the track starts one copy to the left and
+   drifts back to rest. */
+@keyframes garland-travel {
+  from {
+    transform: translate3d(calc(-100% / var(--copies, 3)), 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 
-@media (min-width: 37.5em) and (max-width: 63.99em) {
-  .garland__item:nth-child(7) {
-    grid-column: 2;
+/* Held still while the visitor pauses it, points at it or tabs into it. */
+.garland-strip.is-paused .garland-track,
+.garland-strip__window:focus-within .garland-track {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .garland-strip__window:hover .garland-track {
+    animation-play-state: paused;
   }
+}
+
+.garland {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  gap: var(--gap);
+  /* The gap after the seventh frame, so copy after copy keeps one rhythm. */
+  padding-inline-end: var(--gap);
 }
 
 .garland__item {
   position: relative;
   display: flex;
+  flex: none;
   flex-direction: column;
   align-items: center;
+  width: var(--frame-width);
   padding-block-start: calc(var(--hang-slot) + var(--drop));
+}
+
+/* Pause / play — a small ivory ring beneath the strip, clear of the frames
+   and the WhatsApp button. 32px drawn, a full 44px to tap. */
+.garland-strip__toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-block-start: var(--space-3);
+  padding: 0;
+  color: var(--hero-text);
+  background: rgb(20 20 18 / 0.3);
+  border: var(--border-width) solid rgb(241 235 221 / 0.6);
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.garland-strip__toggle::before {
+  content: '';
+  position: absolute;
+  inset: -0.375rem;
+}
+
+.garland-strip__toggle svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.garland-strip__toggle:focus-visible {
+  outline: 2px solid var(--hero-text);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .garland-strip__toggle:hover {
+    color: var(--color-ink);
+    background: var(--hero-text);
+  }
+}
+
+/* Reduced motion: no travel. One copy of the seven, still — centred where
+   it fits, and on narrower screens a row the visitor can swipe through. */
+@media (prefers-reduced-motion: reduce) {
+  .garland-track {
+    animation: none;
+    will-change: auto;
+  }
+
+  .garland-strip__window {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .garland-track {
+    margin-inline: auto;
+  }
+
+  .garland[aria-hidden='true'],
+  .garland-strip__toggle {
+    display: none;
+  }
+
+  .garland {
+    padding-inline: 0;
+  }
 }
 
 /* --------------------------------------------------------------------------
