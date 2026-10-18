@@ -111,7 +111,7 @@ export default function Gallery() {
             <SectionLabel index={gallery.index}>{gallery.label}</SectionLabel>
           </ScrollReveal>
           <ScrollReveal variant="fade-up" delay={0.09}>
-            <h2 id="gallery-title" className="gallery__headline heading-lg">
+            <h2 id="gallery-title" className="gallery__headline heading-xl">
               {gallery.headline}
             </h2>
           </ScrollReveal>
