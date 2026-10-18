@@ -52,9 +52,10 @@
      sway, hover lift and deep shadow are never cut by its edge. */
   --bleed-top: 1rem;
   --bleed-bottom: 2.75rem;
-  /* Calm: one full set of seven (~1020px) every 42s — about 24px a second,
-     each frame in view for well over ten seconds. */
-  --strip-cycle: 42s;
+  /* One full set of seven (~1020px) every 21s — about 48px a second (twice
+     the first, calmer 42s, at the cafe's request); each frame still stays
+     in view for several seconds. */
+  --strip-cycle: 21s;
 
   position: relative;
   display: flex;
