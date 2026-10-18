@@ -1,6 +1,4 @@
 import { m, useReducedMotion } from 'framer-motion'
-import { Pause, Play } from 'lucide-react'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ImagePlaceholder from '../ImagePlaceholder/ImagePlaceholder'
 import { menuCategories } from '../../data/menuCategories'
@@ -15,8 +13,8 @@ import './HeroFoodMoment.css'
  * the collection as a quiet signature; the seven framed photographs hang
  * beneath it at slightly different heights and tilts, like prints pinned up
  * by hand. At every size they form one horizontal strip that drifts slowly
- * left to right, without end (see COPIES below); a small button beneath it
- * pauses and resumes it. Desktop shows all seven at once, phones two and a
+ * left to right, without end (see COPIES below); pointing at it or tabbing
+ * into it holds it still. Desktop shows all seven at once, phones two and a
  * part of the next.
  *
  * The signature signs itself, on a loop: the pen draws the G in one
@@ -202,15 +200,14 @@ export default function HeroFoodMoment() {
   const prefersReducedMotion = useReducedMotion()
   // Reduced motion: render every layer in its final state.
   const from = (state) => (prefersReducedMotion ? false : state)
-  // The visitor's own pause; hover and keyboard focus also hold the strip
-  // (CSS), so a moving photograph is never a moving target.
-  const [paused, setPaused] = useState(false)
 
   return (
     <div className="garland-set">
       <Signature from={from} />
 
-      <div className={`garland-strip${paused ? ' is-paused' : ''}`}>
+      {/* Hover and keyboard focus hold the strip still (CSS), so a moving
+          photograph is never a moving target. */}
+      <div className="garland-strip">
         <div className="garland-strip__window">
           <div className="garland-track" style={{ '--copies': COPIES }}>
             {Array.from({ length: COPIES }, (_, copy) => (
@@ -218,15 +215,6 @@ export default function HeroFoodMoment() {
             ))}
           </div>
         </div>
-
-        <button
-          type="button"
-          className="garland-strip__toggle"
-          onClick={() => setPaused((value) => !value)}
-          aria-label={paused ? 'Play the moving photographs' : 'Pause the moving photographs'}
-        >
-          {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
-        </button>
       </div>
     </div>
   )
