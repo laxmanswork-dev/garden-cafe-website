@@ -6,6 +6,7 @@ import ResponsiveImage from '../../components/ResponsiveImage/ResponsiveImage'
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal'
 import SectionLabel from '../../components/SectionLabel/SectionLabel'
 import Seo from '../../components/Seo/Seo'
+import { pageMeta } from '../../data/pageMeta'
 import { ownerPhoto, story } from '../../data/storyContent'
 import './OurStory.css'
 
@@ -18,7 +19,7 @@ import './OurStory.css'
 export default function OurStory() {
   return (
     <PageTransition>
-      <Seo title="Our story" description={story.paragraphs[0]} />
+      <Seo {...pageMeta.story} absoluteTitle />
 
       <div className="story-page container">
         <header className="story-opening">

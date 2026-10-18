@@ -33,8 +33,9 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!--
       Page title, description, canonical, Open Graph, Twitter and theme-color
-      are managed per page by src/components/Seo (React Helmet Async).
-      Do not duplicate them here.
+      are managed per page by src/components/Seo (React Helmet Async); the
+      build also writes each page's set into its HTML file (vite.config.js,
+      pageHeads). Do not add them here.
     -->
   </head>
   <body>

@@ -2,6 +2,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import { seo } from './src/data/cafeData.js'
+import { pageMeta } from './src/data/pageMeta.js'
+import { seoTags } from './src/utils/seoTags.js'
+import { cafeStructuredData } from './src/utils/structuredData.js'
 
 /*
  * Menu photographs: which of public/images/menu/<dish>.* exist.
@@ -94,9 +98,108 @@ function menuImages() {
   }
 }
 
+/*
+ * Page heads in the HTML files.
+ *
+ * The site renders in the browser, so the built index.html has no title or
+ * description of its own: link previews (WhatsApp, Facebook, X) and crawlers
+ * that do not run JavaScript would see none. After the build this writes
+ * each real page's tags (data/pageMeta.js through utils/seoTags.js — the
+ * same ones components/Seo renders) into its own file:
+ *
+ *   index.html       /
+ *   menu.html        /menu        (Cloudflare Pages serves it without .html)
+ *   our-story.html   /our-story
+ *   404.html         any other address, with a real 404 status — on Pages,
+ *                    its presence also turns off the fallback that answered
+ *                    every unknown address with the homepage and a 200
+ *
+ * Every file is the same app; the tags carry data-static-seo, and main.jsx
+ * removes them before React writes its own, so a page never has two sets.
+ *
+ * The homepage also gets the cafe's structured data (utils/structuredData.js)
+ * as one JSON-LD block. It lives only here — React does not render it — so
+ * it is not marked for removal and there is never a second copy.
+ */
+const PAGE_FILES = [
+  ['index.html', pageMeta.home, { structuredData: true }],
+  ['menu.html', pageMeta.menu],
+  ['our-story.html', pageMeta.story],
+  ['404.html', pageMeta.notFound],
+]
+
+const escapeHtml = (value) =>
+  String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+
+const toAttributes = (attributes) =>
+  Object.entries(attributes)
+    .map(([key, value]) => `${key}="${escapeHtml(value)}"`)
+    .join(' ')
+
+// JSON-LD inside a <script>: escape '<' so no value can close the tag.
+const jsonLd = (data) => JSON.stringify(data, null, 2).replace(/</g, '\\u003c')
+
+function staticHead(page, { structuredData = false } = {}) {
+  const { title, meta, links } = seoTags({ ...page, path: page.path ?? '/404' })
+  return [
+    `<title data-static-seo>${escapeHtml(title)}</title>`,
+    ...meta.map((attributes) => `<meta data-static-seo ${toAttributes(attributes)} />`),
+    ...links.map((attributes) => `<link data-static-seo ${toAttributes(attributes)} />`),
+    ...(structuredData
+      ? [`<script type="application/ld+json">\n${jsonLd(cafeStructuredData())}\n    </script>`]
+      : []),
+  ]
+    .map((tag) => `    ${tag}`)
+    .join('\n')
+}
+
+/*
+ * sitemap.xml and the robots.txt Sitemap line — written only at launch, when
+ * the production domain is set AND indexing is switched on (seo.siteUrl and
+ * seo.allowIndexing in data/cafeData.js). Before that the build contains no
+ * sitemap and no absolute URL at all. Lists every page with a path that is
+ * not kept out of search results: /, /menu, /our-story.
+ */
+function writeSitemap(outDir) {
+  if (!seo.siteUrl || !seo.allowIndexing) return
+  const urls = Object.values(pageMeta)
+    .filter((page) => page.path && !page.noIndex)
+    .map((page) => `  <url><loc>${escapeHtml(new URL(page.path, seo.siteUrl).href)}</loc></url>`)
+  fs.writeFileSync(
+    path.join(outDir, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
+  )
+  const robots = path.join(outDir, 'robots.txt')
+  fs.appendFileSync(robots, `\nSitemap: ${new URL('/sitemap.xml', seo.siteUrl).href}\n`)
+}
+
+function pageHeads() {
+  let outDir
+  return {
+    name: 'garden-cafe-page-heads',
+    apply: 'build',
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir)
+    },
+    writeBundle() {
+      const shell = fs.readFileSync(path.join(outDir, 'index.html'), 'utf8')
+      if (!shell.includes('</head>')) throw new Error('page heads: no </head> in index.html')
+      for (const [file, page, options] of PAGE_FILES) {
+        const html = shell.replace('</head>', `${staticHead(page, options)}\n  </head>`)
+        fs.writeFileSync(path.join(outDir, file), html)
+      }
+      writeSitemap(outDir)
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), menuImages()],
+  plugins: [react(), menuImages(), pageHeads()],
   css: {
     // Inline (empty) PostCSS config: stops Vite searching parent directories
     // for a postcss.config.js, so no external setup (e.g. Tailwind) can leak

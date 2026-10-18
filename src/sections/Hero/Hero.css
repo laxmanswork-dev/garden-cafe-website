@@ -132,7 +132,7 @@
   line-height: 1;
   /* Two shadows hold the fine pen lines over bright leaves and sky, frame
      to frame: a tight edge, and a soft lift. Neither reads as an effect. */
-  filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.45)) drop-shadow(0 2px 14px rgb(0 0 0 / 0.38));
+  filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.45)) drop-shadow(0 2px 16px rgb(0 0 0 / 0.5));
 }
 
 /* The supporting line — the original words, secondary to the signature
@@ -179,6 +179,25 @@
     rgb(20 20 18 / 0.28) 0%,
     rgb(20 20 18 / 0.2) 40%,
     rgb(20 20 18 / 0.09) 72%,
+    rgb(20 20 18 / 0) 100%
+  );
+}
+
+/* A second, closer tint behind the signed "Garden" alone: a soft charcoal
+   glow the shape of the mark's box, darkest under the strokes (32%) and
+   fading to nothing at its edges, so the pen lines lift off bright leaves
+   without any panel showing. Same layer as the backing above. */
+.hero__headline::after {
+  content: '';
+  position: absolute;
+  inset: -30% -22%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgb(20 20 18 / 0.32) 0%,
+    rgb(20 20 18 / 0.22) 45%,
+    rgb(20 20 18 / 0.09) 75%,
     rgb(20 20 18 / 0) 100%
   );
 }

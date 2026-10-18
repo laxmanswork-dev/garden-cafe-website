@@ -17,6 +17,12 @@ import './styles/animations.css'
 
 import App from './App'
 
+// Each page's HTML file carries its title and meta tags for link previews
+// and crawlers that do not run JavaScript (written by the build, see
+// vite.config.js). From here on components/Seo owns them: React adds tags
+// but never removes ones it did not create, so the static copies go first.
+document.querySelectorAll('[data-static-seo]').forEach((tag) => tag.remove())
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HelmetProvider>

@@ -1,5 +1,6 @@
-# TEMPORARY: indexing is also blocked per page via <meta name="robots"> until
-# `seo.allowIndexing` is enabled in src/data/cafeData.js at launch.
-# Add a Sitemap line once the production domain is confirmed.
+# Indexing is blocked per page via <meta name="robots"> until launch.
+# At launch, setting `seo.siteUrl` and `seo.allowIndexing: true` in
+# src/data/cafeData.js makes the build write sitemap.xml and append its
+# Sitemap line below (vite.config.js, writeSitemap). Don't add it by hand.
 User-agent: *
 Allow: /

@@ -173,7 +173,11 @@ Use real Garden Cafe photography only. Export each photo at 640/960/1280/1920 wi
 
 ### SEO
 
-Each page renders exactly one `<Seo>`. Defaults live in `seo` in `cafeData.js`. The canonical URL, `og:url`, `og:image` and locale are **omitted** until real values exist. **Indexing is disabled** (`allowIndexing: false`) until launch.
+Each page renders exactly one `<Seo>`. Approved titles and descriptions live in `src/data/pageMeta.js`; defaults in `seo` in `cafeData.js`. The tags are built once (`src/utils/seoTags.js`) and written twice: by `<Seo>` in the browser, and by the build into each page's HTML file (`index.html`, `menu.html`, `our-story.html`, `404.html` — `pageHeads` in `vite.config.js`) for link previews and crawlers that don't run JavaScript. `main.jsx` removes the static copies before React renders, so a page never has two sets.
+
+The homepage also carries one `CafeOrCoffeeShop` JSON-LD block (`src/utils/structuredData.js`), from the confirmed business details only.
+
+The canonical URL, `og:url`, `og:image`, the café's `url`, the `WebSite` entry and the sitemap are **omitted** until the domain is set. **Indexing is disabled** (`allowIndexing: false`) until launch.
 
 ### Accessibility
 
@@ -208,9 +212,9 @@ grep -rn "PLACEHOLDER" src
 ## Deployment (Cloudflare Pages)
 
 - Build command `npm run build`, output directory `dist`, Node 20.19 or later.
-- No redirect file is needed: Cloudflare Pages serves `index.html` for unknown paths when the build has no top-level `404.html`, so `/menu` and `/our-story` survive a refresh. Don't add a `404.html` to `public/`.
+- No redirect file is needed. The build writes `menu.html` and `our-story.html` (Pages serves them at `/menu` and `/our-story`; the `/` and `.html` forms redirect there) and a top-level `404.html`, so unknown addresses get a real 404 status instead of the homepage. Every real route is a file, so a refresh always works. When adding a page, add it to `pageMeta.js` and `PAGE_FILES` in `vite.config.js`.
 - Pages rejects files over 25 MiB; keep large originals in `_source-assets/`.
-- At launch, with the domain known: set `seo.siteUrl` and `seo.allowIndexing: true` in `cafeData.js`, add a `Sitemap:` line to `public/robots.txt` (and a sitemap for `/`, `/menu`, `/our-story`), and supply `seo.defaultImage` for social sharing.
+- **At launch**, with the domain confirmed: in `cafeData.js` set `seo.siteUrl` (e.g. `'https://example.com'`, the one public origin) and `seo.allowIndexing: true`, then rebuild. That adds canonical URLs, `og:url`, the café's `url` and `WebSite` entry, `sitemap.xml` and the robots.txt `Sitemap:` line, and switches every page to `index, follow`. Optionally supply `seo.defaultImage` (1200 × 630) for link previews. In Cloudflare, redirect the other host variants (`www`/bare, `*.pages.dev`) to that one origin, then submit the sitemap in Google Search Console.
 
 ## Environment note
 

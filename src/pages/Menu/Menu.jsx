@@ -7,6 +7,7 @@ import PageTransition from '../../components/PageTransition/PageTransition'
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal'
 import SectionLabel from '../../components/SectionLabel/SectionLabel'
 import Seo from '../../components/Seo/Seo'
+import { pageMeta } from '../../data/pageMeta'
 import { menu, SPECIALS_GROUPS } from '../../data/menuData'
 import { reportMissingMenuImages } from '../../utils/menuImages'
 import { EASE_STANDARD } from '../../utils/motion'
@@ -204,11 +205,6 @@ function groupDishes(items) {
     .filter((group) => group.dishes.length > 0)
 }
 
-// "breakfast, specials & savoury bites, …, vegetable juices and mojitos" — from the sections shown.
-const SECTION_LIST = new Intl.ListFormat('en-GB').format(
-  menu.map((section) => section.title.toLowerCase()),
-)
-
 export default function Menu() {
   useEffect(() => {
     reportMissingMenuImages(menu.flatMap((section) => section.items))
@@ -216,11 +212,7 @@ export default function Menu() {
 
   return (
     <PageTransition>
-      <Seo
-        title="Garden Cafe Menu | Food & Drinks"
-        absoluteTitle
-        description={`The Garden Cafe menu: ${SECTION_LIST}.`}
-      />
+      <Seo {...pageMeta.menu} absoluteTitle />
 
       <div className="menu-page">
         <header className="menu-page__intro container">

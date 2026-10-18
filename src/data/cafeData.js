@@ -32,7 +32,11 @@ export const cafe = {
     city: 'Kanniyakumari',
     region: 'Tamil Nadu',
     postalCode: '629702',
-    country: null, // PLACEHOLDER
+    country: null, // PLACEHOLDER — shown in the Visit address when set
+    // Confirmed by Garden Cafe (2026-10-19): India. Used only by the
+    // structured data (utils/structuredData.js); the visible address is
+    // unchanged.
+    countryCode: 'IN',
     // Google Maps directions to the address above (no API key needed).
     mapUrl: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(MAP_QUERY)}`,
     // Google Maps embed of the same address (no API key needed).
@@ -119,7 +123,7 @@ export const navigation = [
  */
 export const seo = {
   siteName: 'Garden Cafe',
-  titleTemplate: '%s — Garden Cafe',
+  titleTemplate: '%s | Garden Cafe', // the pattern in data/pageMeta.js
   defaultTitle: 'Garden Cafe — Good Food. Open Skies. Great Company.',
   // Approved positioning copy (The Place). Replace if the client supplies a
   // dedicated meta description.

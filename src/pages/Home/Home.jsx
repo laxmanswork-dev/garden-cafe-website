@@ -1,5 +1,6 @@
 import PageTransition from '../../components/PageTransition/PageTransition'
 import Seo from '../../components/Seo/Seo'
+import { pageMeta } from '../../data/pageMeta'
 import Hero from '../../sections/Hero/Hero'
 import ThePlace from '../../sections/ThePlace/ThePlace'
 import Gallery from '../../sections/Gallery/Gallery'
@@ -13,7 +14,7 @@ import Visit from '../../sections/Visit/Visit'
 export default function Home() {
   return (
     <PageTransition>
-      <Seo />
+      <Seo {...pageMeta.home} absoluteTitle />
       <Hero />
       <ThePlace />
       <Gallery />
