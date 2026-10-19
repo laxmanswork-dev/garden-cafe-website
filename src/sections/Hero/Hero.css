@@ -21,10 +21,10 @@
   /* New stacking context so the film's negative z-index stays inside. */
   isolation: isolate;
 
-  /* Space between the supporting line and the action: 36 → 48px, growing
-     with the screen's height as well as its width, so tall phones give the
-     buttons real air instead of leaving it all below the photographs. */
-  --hero-action-gap: clamp(2.25rem, 1.5rem + 2.2svh + 0.6vw, 3rem);
+  /* Space between the supporting line and the action: 35 → 42px, growing
+     with the screen's height as well as its width — enough to separate the
+     buttons, close enough that line and action read as one group. */
+  --hero-action-gap: clamp(2rem, 1.25rem + 2svh + 0.5vw, 2.625rem);
 
   /* The two hero buttons: 48px tall — a comfortable thumb target. */
   --hero-button-height: 3rem;
@@ -64,6 +64,18 @@
   object-fit: cover;
   /* No CSS filter: the clean grade is baked into the file, and any blur or
      desaturation here would soften it again. */
+}
+
+/* Phones and tablets see only a narrow, tall slice of the wide film. The
+   camera pans past a dark pillar that, in the centre slice, stood right
+   behind the signature for most of the loop; framed from the right of the
+   shot instead, the slice shows the roof, lamps and open greenery, and the
+   pillar only brushes the left edge in the first second. (Desktop sees
+   nearly the whole frame and keeps the centre.) The poster follows. */
+@media (max-width: 63.99em) {
+  .hero__video {
+    object-position: 82% 50%;
+  }
 }
 
 /* The shade over the whole film (and its poster): a vertical veil — 50% at
