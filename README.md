@@ -209,10 +209,11 @@ grep -rn "PLACEHOLDER" src
 9. Semantic HTML first. Never make a clickable `<div>`.
 10. Keep one visual system consistent from the hero through the footer.
 
-## Deployment (Cloudflare Pages)
+## Deployment (Cloudflare)
 
 - Build command `npm run build`, output directory `dist`, Node 20.19 or later.
-- No redirect file is needed. The build writes `menu.html` and `our-story.html` (Pages serves them at `/menu` and `/our-story`; the `/` and `.html` forms redirect there) and a top-level `404.html`, so unknown addresses get a real 404 status instead of the homepage. Every real route is a file, so a refresh always works. When adding a page, add it to `pageMeta.js` and `PAGE_FILES` in `vite.config.js`.
+- The Cloudflare project is a Worker serving static files: deploy command `npx wrangler deploy`, configured by `wrangler.jsonc` (assets from `dist`, no Worker code). Keep that file — without it `wrangler deploy` tries to set the project up itself by parsing `vite.config.js`, and fails. The `name` in it must match the Worker's name in the dashboard. (`dist` also works unchanged as a Cloudflare Pages site with no deploy command.)
+- No redirect file is needed. The build writes `menu.html` and `our-story.html` (served at `/menu` and `/our-story`; the `/` and `.html` forms redirect there) and a top-level `404.html`, so unknown addresses get a real 404 status instead of the homepage (`not_found_handling: "404-page"`). Every real route is a file, so a refresh always works. When adding a page, add it to `pageMeta.js` and `PAGE_FILES` in `vite.config.js`.
 - Pages rejects files over 25 MiB; keep large originals in `_source-assets/`.
 - **At launch**, with the domain confirmed: in `cafeData.js` set `seo.siteUrl` (e.g. `'https://example.com'`, the one public origin) and `seo.allowIndexing: true`, then rebuild. That adds canonical URLs, `og:url`, the café's `url` and `WebSite` entry, `sitemap.xml` and the robots.txt `Sitemap:` line, and switches every page to `index, follow`. Optionally supply `seo.defaultImage` (1200 × 630) for link previews. In Cloudflare, redirect the other host variants (`www`/bare, `*.pages.dev`) to that one origin, then submit the sitemap in Google Search Console.
 

@@ -1,0 +1,17 @@
+// Cloudflare deployment: the built site in `dist`, served as static files.
+// No Worker code. `npm run build` first, then `npx wrangler deploy`.
+//
+// Without this file, `wrangler deploy` tries to set the project up itself
+// (parsing vite.config.js and adding Cloudflare's Vite plugin), which fails.
+{
+  // Must match the Worker's name in the Cloudflare dashboard.
+  "name": "garden-cafe-website",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // /menu serves menu.html; /menu/ and /menu.html redirect to /menu.
+    "html_handling": "auto-trailing-slash",
+    // Unknown addresses get dist/404.html with a real 404 status.
+    "not_found_handling": "404-page",
+  },
+}
