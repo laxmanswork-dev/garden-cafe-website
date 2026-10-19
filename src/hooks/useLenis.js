@@ -60,6 +60,11 @@ function createScrollController() {
 
     scrollTo(target, { immediate = false, offset = 0 } = {}) {
       if (lenis) {
+        // Measure the page first: Lenis caps every scroll at the height it
+        // last measured, and after a route change that is still the previous
+        // page's — a jump from /our-story to /#visit stopped at the bottom
+        // of the short story page instead of reaching the section.
+        lenis.resize()
         // Lenis reads scroll-margin-top / scroll-padding-top itself.
         lenis.scrollTo(target, { immediate, offset, force: true })
         return
