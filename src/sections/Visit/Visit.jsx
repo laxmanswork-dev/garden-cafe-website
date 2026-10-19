@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Button from '../../components/Button/Button'
+import GardenSignature from '../../components/GardenSignature/GardenSignature'
 import Headline from '../../components/Headline/Headline'
 import ScrollReveal, {
   ScrollRevealGroup,
@@ -134,6 +135,11 @@ export default function Visit() {
           <SectionLabel index={visit.index}>{visit.label}</SectionLabel>
           <div className="visit__intro-body">
             <Headline id="visit-title" lines={visit.headline} />
+            {/* The cafe's signed "Garden" beneath the invitation, as a
+                sign-off. Decorative: the heading carries the words. */}
+            <ScrollReveal className="visit__signature" delay={0.15}>
+              <GardenSignature />
+            </ScrollReveal>
             <ScrollReveal className="visit__copy" delay={0.2}>
               {/* Actions activate only once the information behind them exists. */}
               <div className="visit__actions">

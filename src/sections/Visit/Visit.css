@@ -41,6 +41,17 @@
   gap: var(--space-7);
 }
 
+/* The signed "Garden" under the heading: a quiet sign-off in the heading's
+   ink, about half the hero's (56 → 84px tall; the width follows, ~1.9×).
+   Held close beneath the heading (16px, not the group's 48px); the buttons
+   keep their 48px below it. */
+.visit__signature {
+  margin-block-start: calc(var(--space-4) - var(--space-7));
+  font-size: clamp(3.5rem, 2.9rem + 2.5vw, 5.25rem);
+  line-height: 1;
+  color: var(--surface-text);
+}
+
 .visit__copy {
   display: flex;
   flex-direction: column;
@@ -125,14 +136,49 @@
   color: var(--color-moss-dark);
 }
 
+/* The frame used for the cafe's photographs (ThePlace.css) and the
+   owners' photograph (OurStory.css), around the information and the map:
+   a deep warm-stone moulding (lighter at the top), a faint lip of light
+   just inside its outer edge, an ivory mount with a dark hairline where it
+   meets the moulding. Same close, understated shadow. */
+.visit__info,
+.visit__map {
+  --frame-border: clamp(5px, 1.4vw, 7px);
+  --frame-mount: clamp(12px, 3vw, 16px);
+  border: var(--frame-border) solid transparent;
+  padding: var(--frame-mount);
+  background:
+    linear-gradient(#fbf9f3, #fbf9f3) padding-box,
+    linear-gradient(#544f46, #413d36) border-box;
+  outline: 1px solid rgb(255 250 240 / 0.12);
+  outline-offset: -2px;
+  box-shadow:
+    inset 0 0 0 1px rgb(20 21 19 / 0.45),
+    0 0 0 1px #36332d,
+    0 1px 1.5px rgb(32 33 30 / 0.16),
+    0 5px 12px rgb(32 33 30 / 0.07);
+}
+
+/* The information: a roomier mount than a photograph's, so the text never
+   sits tight against the moulding. */
+.visit__info {
+  --frame-mount: clamp(1.25rem, 2.6vw, 1.75rem);
+  padding-block: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+/* The mount's edge replaces the first group's rule; the rules between
+   groups stay. */
+.visit__info > .visit__group:first-child {
+  border-top: 0;
+}
+
 /* The map: the full content width, held low so it sits under the
-   invitation rather than over it; colours softened towards the page. */
+   invitation rather than over it; colours softened towards the page. The
+   map keeps its own height; the frame adds to it, with a fine line around
+   the map itself. */
 .visit__map {
   grid-column: 1 / -1;
-  height: clamp(16rem, 26vw, 23.5rem);
-  overflow: hidden;
-  border: var(--border-width) solid var(--surface-line);
-  background-color: var(--color-stone-soft);
+  height: calc(clamp(16rem, 26vw, 23.5rem) + 2 * (var(--frame-border) + var(--frame-mount)));
 }
 
 .visit__map iframe {
@@ -140,6 +186,9 @@
   width: 100%;
   height: 100%;
   border: 0;
+  background-color: var(--color-stone-soft);
+  outline: 1px solid rgb(32 33 30 / 0.18);
+  outline-offset: -1px;
   filter: saturate(0.7);
 }
 
