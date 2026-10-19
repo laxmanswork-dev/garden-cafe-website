@@ -130,10 +130,10 @@ export const seo = {
   // dedicated meta description.
   defaultDescription:
     'Garden Cafe is an open-air space designed for good food, easy conversations and time spent together.',
-  siteUrl: null, // PLACEHOLDER — production origin, e.g. 'https://…' (no trailing slash)
+  siteUrl: 'https://gardencafekanyakumari.com', // production origin (no trailing slash)
   locale: null, // PLACEHOLDER — Open Graph locale, e.g. 'en_GB'
   defaultImage: null, // PLACEHOLDER — { src: '/images/og/….jpg', width: 1200, height: 630, alt }
   twitterHandle: null, // PLACEHOLDER — '@handle' if the cafe uses X/Twitter
   themeColor: '#F7F5EF', // --color-paper
-  allowIndexing: false, // set to true at launch, once placeholders are replaced
+  allowIndexing: false, // set to true once the launch checks in README (Deployment) pass
 }

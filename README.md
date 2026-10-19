@@ -177,7 +177,7 @@ Each page renders exactly one `<Seo>`. Approved titles and descriptions live in 
 
 The homepage also carries one `CafeOrCoffeeShop` JSON-LD block (`src/utils/structuredData.js`), from the confirmed business details only.
 
-The canonical URL, `og:url`, `og:image`, the café's `url`, the `WebSite` entry and the sitemap are **omitted** until the domain is set. **Indexing is disabled** (`allowIndexing: false`) until launch.
+The production origin is `seo.siteUrl` (`https://gardencafekanyakumari.com`). From it the build writes canonical URLs, `og:url`, the café's `url` and `WebSite` entry, `sitemap.xml` (`/`, `/menu`, `/our-story`) and the robots.txt `Sitemap:` line. `og:image` is omitted until `seo.defaultImage` is supplied. **Indexing is still disabled** (`allowIndexing: false`): every page says `noindex, nofollow` until the launch checks below pass.
 
 ### Accessibility
 
@@ -215,7 +215,7 @@ grep -rn "PLACEHOLDER" src
 - The Cloudflare project is a Worker serving static files: deploy command `npx wrangler deploy`, configured by `wrangler.jsonc` (assets from `dist`, no Worker code). Keep that file — without it `wrangler deploy` tries to set the project up itself by parsing `vite.config.js`, and fails. The `name` in it must match the Worker's name in the dashboard. (`dist` also works unchanged as a Cloudflare Pages site with no deploy command.)
 - No redirect file is needed. The build writes `menu.html` and `our-story.html` (served at `/menu` and `/our-story`; the `/` and `.html` forms redirect there) and a top-level `404.html`, so unknown addresses get a real 404 status instead of the homepage (`not_found_handling: "404-page"`). Every real route is a file, so a refresh always works. When adding a page, add it to `pageMeta.js` and `PAGE_FILES` in `vite.config.js`.
 - Pages rejects files over 25 MiB; keep large originals in `_source-assets/`.
-- **At launch**, with the domain confirmed: in `cafeData.js` set `seo.siteUrl` (e.g. `'https://example.com'`, the one public origin) and `seo.allowIndexing: true`, then rebuild. That adds canonical URLs, `og:url`, the café's `url` and `WebSite` entry, `sitemap.xml` and the robots.txt `Sitemap:` line, and switches every page to `index, follow`. Optionally supply `seo.defaultImage` (1200 × 630) for link previews. In Cloudflare, redirect the other host variants (`www`/bare, `*.pages.dev`) to that one origin, then submit the sitemap in Google Search Console.
+- **Before switching indexing on**: confirm the deployed site serves `https://gardencafekanyakumari.com/sitemap.xml` and shows the canonical tags; in Cloudflare, enable _Always Use HTTPS_ and 301-redirect `www.gardencafekanyakumari.com` (and any `*.workers.dev`/`*.pages.dev` host) to `https://gardencafekanyakumari.com`. Then set `seo.allowIndexing: true` in `cafeData.js`, rebuild and deploy (every page switches to `index, follow`), and resubmit the sitemap in Google Search Console. Optionally supply `seo.defaultImage` (1200 × 630) for link previews.
 
 ## Environment note
 

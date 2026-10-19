@@ -1,6 +1,6 @@
-# Indexing is blocked per page via <meta name="robots"> until launch.
-# At launch, setting `seo.siteUrl` and `seo.allowIndexing: true` in
-# src/data/cafeData.js makes the build write sitemap.xml and append its
-# Sitemap line below (vite.config.js, writeSitemap). Don't add it by hand.
+# Indexing is controlled per page via <meta name="robots">
+# (`seo.allowIndexing` in src/data/cafeData.js). The build writes
+# sitemap.xml and appends its Sitemap line below from `seo.siteUrl`
+# (vite.config.js, writeSitemap). Don't add it by hand.
 User-agent: *
 Allow: /

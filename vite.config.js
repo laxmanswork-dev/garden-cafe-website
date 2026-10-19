@@ -158,14 +158,15 @@ function staticHead(page, { structuredData = false } = {}) {
 }
 
 /*
- * sitemap.xml and the robots.txt Sitemap line — written only at launch, when
- * the production domain is set AND indexing is switched on (seo.siteUrl and
- * seo.allowIndexing in data/cafeData.js). Before that the build contains no
- * sitemap and no absolute URL at all. Lists every page with a path that is
- * not kept out of search results: /, /menu, /our-story.
+ * sitemap.xml and the robots.txt Sitemap line — written whenever the
+ * production domain is set (seo.siteUrl in data/cafeData.js), so Search
+ * Console can fetch the sitemap before indexing is switched on. Whether the
+ * pages may be indexed is decided separately, by their robots meta tag
+ * (seo.allowIndexing). Lists every page with a path that is not kept out of
+ * search results: /, /menu, /our-story.
  */
 function writeSitemap(outDir) {
-  if (!seo.siteUrl || !seo.allowIndexing) return
+  if (!seo.siteUrl) return
   const urls = Object.values(pageMeta)
     .filter((page) => page.path && !page.noIndex)
     .map((page) => `  <url><loc>${escapeHtml(new URL(page.path, seo.siteUrl).href)}</loc></url>`)
