@@ -112,6 +112,7 @@ export const cafe = {
 export const navigation = [
   { label: 'Home', to: '/' },
   { label: 'The Cafe', to: '/#the-place' },
+  { label: 'Gallery', to: '/#gallery' },
   { label: 'Menu', to: '/menu' },
   { label: 'Visit Us', to: '/#visit' },
 ]
