@@ -10,22 +10,24 @@
   place-items: center;
   min-height: 100vh;
   min-height: 100svh;
-  /* Clear the navbar above; the group (brand → food moment) is centred in
-     what remains, then lifted as one piece (12 → 24px): the lift moves from
-     the top padding to the bottom, so the hero's height never changes. */
-  --hero-lift: clamp(0.75rem, 0.486rem + 1.1268vw, 1.5rem);
-  padding-block: calc(var(--nav-height) + var(--space-5) - var(--hero-lift))
-    calc(var(--space-8) + var(--hero-lift));
+  /* Clear the navbar above; the group (label → photographs) is centred in
+     what remains — the same 24px of padding above and below, so the air
+     over the label matches the air under the photographs at every screen
+     height. The foot also clears the home indicator on notched phones. */
+  padding-block: calc(var(--nav-height) + var(--space-5))
+    calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
   padding-inline: var(--page-padding);
   overflow: hidden;
   /* New stacking context so the film's negative z-index stays inside. */
   isolation: isolate;
 
-  /* Space between the headline and the action: 40 → 56px. */
-  --hero-action-gap: clamp(2.5rem, 2.1479rem + 1.5023vw, 3.5rem);
+  /* Space between the supporting line and the action: 36 → 48px, growing
+     with the screen's height as well as its width, so tall phones give the
+     buttons real air instead of leaving it all below the photographs. */
+  --hero-action-gap: clamp(2.25rem, 1.5rem + 2.2svh + 0.6vw, 3rem);
 
-  /* The two hero buttons: 47px tall, a step above the 44px tap minimum. */
-  --hero-button-height: 2.9375rem;
+  /* The two hero buttons: 48px tall — a comfortable thumb target. */
+  --hero-button-height: 3rem;
 
   /* Invisible glass behind the photographs. A whisper of light, every side
      fading to nothing: felt, not seen. (Not behind the text: a white tint
@@ -64,19 +66,24 @@
      desaturation here would soften it again. */
 }
 
-/* The shade over the whole film: a vertical veil — 45% at the top, where
-   the bright ceiling and fixtures sit; 25% through the middle; 60% at the
-   foot — so the ivory type and white frames hold contrast as the film's
-   brightness shifts frame to frame. */
+/* The shade over the whole film (and its poster): a vertical veil — 50% at
+   the top, where the bright ceiling and fixtures sit; 38 → 36% through the
+   band where the label, signature and line sit; 62% at the foot — so the
+   ivory type and white frames hold contrast as the film's brightness
+   shifts frame to frame, while leaves, roof and lamps keep their colour.
+   Measured over the film: the label and line now read ≥ 6:1 typical and
+   ~4.2–4.8:1 on the brightest frames (were ~5.0–6.5 and ~3.4–3.8:1). */
 .hero__media::after {
   content: '';
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgb(0 0 0 / 0.45) 0%,
-    rgb(0 0 0 / 0.25) 50%,
-    rgb(0 0 0 / 0.6) 100%
+    rgb(0 0 0 / 0.5) 0%,
+    rgb(0 0 0 / 0.38) 40%,
+    rgb(0 0 0 / 0.36) 60%,
+    rgb(0 0 0 / 0.62) 100%
   );
 }
 
@@ -267,30 +274,11 @@
   }
 }
 
-/* Headline and action sit a little lower (16 → 32px). A relative offset
-   moves only these two; the photographs keep their place, with ~70px of
-   air left between the action and the garden line. The headline's
-   position also anchors its local contrast layer (::before). */
-.hero {
-  /* 36 → 52px: the headline group's offset, a little lower than before. */
-  --hero-group-offset: calc(clamp(1rem, 0.6479rem + 1.5023vw, 2rem) + 1.25rem);
-}
-
-.hero__eyebrow,
-.hero__headline,
-.hero__tagline,
-.hero__actions {
+/* The h1 anchors its two contrast layers (::before, ::after). Every gap in
+   the group is real layout — no relative nudges — so the centring above
+   sees the composition exactly as it is drawn. */
+.hero__headline {
   position: relative;
-  top: var(--hero-group-offset);
-}
-
-/* The headline alone sits a further 10px lower, a touch closer to the
-   action; the button and everything below stay where they are. The
-   eyebrow and the supporting line travel with it. */
-.hero__eyebrow,
-.hero__headline,
-.hero__tagline {
-  top: calc(var(--hero-group-offset) + 0.625rem);
 }
 
 /* Eyebrow — the descriptor above the signature: spaced capitals a step
@@ -312,16 +300,33 @@
   justify-content: center;
   align-items: center;
   /* Restrained: the two buttons sit close together, never across the page
-     (12 → 16px). */
-  gap: var(--space-3) clamp(0.75rem, 0.662rem + 0.3756vw, 1rem);
+     (14 → 16px) — still a clear gap between two thumb targets. */
+  gap: var(--space-3) clamp(0.875rem, 0.83rem + 0.19vw, 1rem);
   /* The headline finishes, then the action follows. */
   margin-block-start: var(--hero-action-gap);
 }
 
-/* Small phones: a touch less side padding keeps the pair on one row. */
+/* Phones: a touch less side padding (18px) keeps the pair on one row. */
 @media (max-width: 26.24em) {
   .hero .hero__actions .button {
+    --button-padding-x: 1.125rem;
+  }
+}
+
+/* The narrowest phones (under 360px): 15px, so the pair still fits. */
+@media (max-width: 22.49em) {
+  .hero .hero__actions .button {
     --button-padding-x: 0.9375rem;
+  }
+}
+
+/* Below 320px the pair can't sit side by side comfortably: the buttons
+   stack at one shared width rather than wrapping unevenly. */
+@media (max-width: 19.99em) {
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: min(100%, 16rem);
   }
 }
 
@@ -329,36 +334,19 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  /* Breathing room between the action and the photographs: 20 → 52px of
-     layout. The frames hang a further ~60–75px inside the strip and the
-     action is nudged down by the group offset, so the eye reads ~42px on
-     phones to ~50–57px on desktop between the buttons and the frames:
-     close enough that signature, line, buttons and strip read as one
-     sequence, still a deliberate pause. (The strip's padding may reach up
-     under the buttons; it never takes their taps — HeroFoodMoment.css.)
-     It is real layout space, so on short screens the hero grows and the
-     frames run on toward the next chapter rather than being clipped. */
-  margin-block-start: clamp(1.25rem, 0.75rem + 2vw, 3.25rem);
+  /* Breathing room between the action and the photographs. The frames
+     already hang ~58–60px inside the strip, so this margin only fine-tunes
+     it (−12 → +12px), growing with the screen's height: the eye reads
+     ~52px between buttons and frames on a short phone, ~55–63px on tall
+     phones and desktops — one sequence, still a clear pause. (The strip's
+     padding reaches up under the buttons; it never takes their taps —
+     HeroFoodMoment.css.) It is real layout space, so on short screens the
+     hero grows rather than letting the frames meet the buttons. */
+  margin-block-start: clamp(-0.75rem, 2.5svh - 1.5rem, 0.75rem);
 }
 
 /* Invisible glass behind the moving photographs and their marks — only
    that area (layer defined with the headline's, above). */
 .hero .garland-strip::before {
   inset: -2.5rem -1.5rem -2.75rem;
-}
-
-/* Short laptop screens (under 640px tall — e.g. 1366 × 768 at 125% zoom):
-   a little less air above the photographs, so the whole row stays on
-   screen, and the signature group drops its downward nudge so the action
-   stays clear of the photographs. */
-@media (min-width: 64em) and (max-height: 40em) {
-  .hero {
-    --hero-group-offset: 0rem;
-    /* No lift here: the group already fills the screen. */
-    --hero-lift: 0rem;
-  }
-
-  .hero__food {
-    margin-block-start: 1rem;
-  }
 }
