@@ -47,10 +47,10 @@ const HANG = [
   { drop: DROP, tilt: -1, sway: 0.7, cycle: 7.4, gust: 2.4 }, // Tea
   { drop: DROP, tilt: 0.6, sway: 0.55, cycle: 6.6, gust: 1.9 }, // Coffee
   { drop: DROP, tilt: -0.6, sway: 0.65, cycle: 8.2, gust: 2.2 }, // Snacks
-  { drop: DROP, tilt: 0.9, sway: 0.5, cycle: 7, gust: 1.8 }, // Sweets
+  { drop: DROP, tilt: 0.9, sway: 0.5, cycle: 7, gust: 1.8 }, // Falooda
   { drop: DROP, tilt: -0.6, sway: 0.6, cycle: 7.8, gust: 2.1 }, // Milkshakes
   { drop: DROP, tilt: 0.6, sway: 0.75, cycle: 6.9, gust: 2.6 }, // Ice Cream
-  { drop: DROP, tilt: -0.8, sway: 0.55, cycle: 7.6, gust: 2 }, // Falooda
+  { drop: DROP, tilt: -0.8, sway: 0.55, cycle: 7.6, gust: 2 }, // Sweets
 ]
 
 // The sway begins once the entrance has settled, each frame a beat apart.

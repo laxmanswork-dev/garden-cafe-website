@@ -67,14 +67,15 @@ export const menuCategories = [
     large: { src: '/images/food/web/snacks-825.webp', width: 825, height: 601 },
   },
   {
-    id: 'sweets',
+    // Falooda is not yet in the verified menu (menuData.js), so its link
+    // opens Food & Drinks at its first category.
+    id: 'falooda',
     number: '04',
-    name: 'Sweets',
-    image: '/images/food/web/sweets-640.webp',
-    srcSet: '/images/food/web/sweets-320.webp 320w, /images/food/web/sweets-640.webp 640w',
-    alt: 'Sweets served at Garden Cafe',
+    name: 'Falooda',
+    image: '/images/food/web/falooda-640.webp',
+    srcSet: '/images/food/web/falooda-320.webp 320w, /images/food/web/falooda-640.webp 640w',
+    alt: 'Falooda served at Garden Cafe',
     photoSupplied: true,
-    large: { src: '/images/food/web/sweets-775.webp', width: 775, height: 611 },
   },
   {
     id: 'milkshakes',
@@ -97,14 +98,13 @@ export const menuCategories = [
     large: { src: '/images/food/web/ice-cream-807.webp', width: 807, height: 634 },
   },
   {
-    // Falooda is not yet in the verified menu (menuData.js), so its link
-    // opens Food & Drinks at its first category.
-    id: 'falooda',
+    id: 'sweets',
     number: '07',
-    name: 'Falooda',
-    image: '/images/food/web/falooda-640.webp',
-    srcSet: '/images/food/web/falooda-320.webp 320w, /images/food/web/falooda-640.webp 640w',
-    alt: 'Falooda served at Garden Cafe',
+    name: 'Sweets',
+    image: '/images/food/web/sweets-640.webp',
+    srcSet: '/images/food/web/sweets-320.webp 320w, /images/food/web/sweets-640.webp 640w',
+    alt: 'Sweets served at Garden Cafe',
     photoSupplied: true,
+    large: { src: '/images/food/web/sweets-775.webp', width: 775, height: 611 },
   },
 ]
