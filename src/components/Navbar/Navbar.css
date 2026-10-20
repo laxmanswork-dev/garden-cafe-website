@@ -86,20 +86,6 @@
   aspect-ratio: 1;
 }
 
-/* Phones: the badge a touch larger (42px, its lettering easier to make
-   out) and the wordmark a touch smaller and closer (18px, 10px apart), so
-   the two read as one balanced mark with room before the menu button. */
-@media (max-width: 37.49em) {
-  .navbar__logo {
-    font-size: 1.125rem;
-    gap: 0.625rem;
-  }
-
-  .navbar__badge {
-    width: 2.625rem;
-  }
-}
-
 /* --------------------------------------------------------------------------
    Toggle (below 1024px)
    -------------------------------------------------------------------------- */

@@ -3,10 +3,8 @@
    Sits below the navbar layer, so the open mobile menu covers it.
    ========================================================================== */
 
-/* Phones: a 40px disc — quieter beside the content — over an invisible
-   48px tap area (::before), so it stays as easy to hit as before. */
 .whatsapp-button {
-  --whatsapp-size: 40px;
+  --whatsapp-size: 42px;
   --whatsapp-gap: 20px;
   --whatsapp-lift: 0px; /* set from JS while the footer base row is in view */
 
@@ -30,14 +28,6 @@
   transition:
     transform var(--duration-fast) var(--ease-standard),
     box-shadow var(--duration-fast) var(--ease-standard);
-}
-
-/* The tap area: at least 48 × 48px, centred on the disc. */
-.whatsapp-button::before {
-  content: '';
-  position: absolute;
-  inset: min(0px, calc((var(--whatsapp-size) - 48px) / 2));
-  border-radius: 50%;
 }
 
 .whatsapp-button svg {

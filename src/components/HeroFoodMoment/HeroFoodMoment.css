@@ -106,47 +106,23 @@
     width: 100vw;
     margin-inline: calc(50% - 50vw);
   }
-
-  /* The same eased dissolve as on phones, over ~12% of the wider screen,
-     so the frames at either edge read as arriving, not cut off. */
-  .garland-strip__window {
-    --fade-in: linear-gradient(
-      to right,
-      transparent,
-      rgb(0 0 0 / 0.12) 3%,
-      rgb(0 0 0 / 0.42) 6%,
-      rgb(0 0 0 / 0.8) 9%,
-      #000 12%,
-      #000 88%,
-      rgb(0 0 0 / 0.8) 91%,
-      rgb(0 0 0 / 0.42) 94%,
-      rgb(0 0 0 / 0.12) 97%,
-      transparent
-    );
-
-    -webkit-mask-image: var(--fade-in);
-    mask-image: var(--fade-in);
-  }
 }
 
 /* Phones: a card is a third of the screen, so a short fade cut the cards
    (and their names) almost sharply at the edge. Here the frames dissolve
-   over ~22% of the width instead, on a slow ease, so the neighbour half
-   off either edge is a soft preview of the next card — the two in the
-   middle stay fully clear — never a card cropped by accident. */
+   over ~15% of the width instead, easing in, so the neighbours on either
+   side read as passing through, not cropped. */
 @media (max-width: 37.49em) {
   .garland-strip__window {
     --fade-in: linear-gradient(
       to right,
       transparent,
-      rgb(0 0 0 / 0.12) 5%,
-      rgb(0 0 0 / 0.42) 11%,
-      rgb(0 0 0 / 0.8) 17%,
-      #000 22%,
-      #000 78%,
-      rgb(0 0 0 / 0.8) 83%,
-      rgb(0 0 0 / 0.42) 89%,
-      rgb(0 0 0 / 0.12) 95%,
+      rgb(0 0 0 / 0.3) 5%,
+      rgb(0 0 0 / 0.75) 10%,
+      #000 15%,
+      #000 85%,
+      rgb(0 0 0 / 0.75) 90%,
+      rgb(0 0 0 / 0.3) 95%,
       transparent
     );
 
